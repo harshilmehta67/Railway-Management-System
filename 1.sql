@@ -23,7 +23,6 @@ create table tier1(
     total_seat int,
     PRIMARY KEY(tier_type,train_id)
 )
-
 create table station1(
     station_id int primary key,
     station_name varchar(20),
