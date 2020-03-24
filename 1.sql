@@ -37,6 +37,3 @@ insert into station1 values(103,'srt',9);
 insert into station1 values(104,'mumbai',20);
 insert into station1 values(105,'delhi',25);
 end
-
-
-
