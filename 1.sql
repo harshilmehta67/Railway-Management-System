@@ -13,13 +13,14 @@ create table train1(
     sat char(1),
     sun char(1)
 )
+--train id is 5 digit number
 begin
-insert into train1 values(1000,'SaujantaExp' ,   100,   101,  13.00,  04.30);
-insert into train1 values(1001,'SaujantaExp2',   100,   103,  16.00,  07.30);
-insert into train1 values(1002,'SaujantaExp3',   103,   102,  18.00,  05.30);
-insert into train1 values(1003,'mumtodelhi'  ,   104,   105,  10.00,  22.00);
-insert into train1 values(1004,'mumtosrt'    ,   104,   103,  15.30,  10.00);
-insert into train1 values(1005,'delhitorjk'  ,   105,   100,  9.30,   23.00);
+insert into train1 values(10000, 'SaujantaExp' ,   100,   101,  13.00,  04.30, 'Y', 'N' ,'Y', 'N', 'Y', 'N', 'N');
+insert into train1 values(10001, 'SaujantaExp2',   100,   103,  16.00,  07.30, 'N', 'Y' ,'Y', 'N', 'Y', 'N', 'Y');
+insert into train1 values(10002, 'SaujantaExp3',   103,   102,  18.00,  05.30, 'N', 'Y' ,'Y', 'N', 'N', 'N', 'Y');
+insert into train1 values(10003, 'mumtodelhi'  ,   104,   105,  10.00,  22.00, 'Y', 'Y' ,'Y', 'N', 'N', 'N', 'N');
+insert into train1 values(10004, 'mumtosrt'    ,   104,   103,  15.30,  10.00, 'N', 'N' ,'Y', 'N', 'N', 'Y', 'Y');
+insert into train1 values(10005, 'delhitorjk'  ,   105,   100,  9.30,   23.00, 'Y', 'Y' ,'N', 'N', 'N', 'Y', 'N');
 end
 
 
@@ -41,15 +42,17 @@ create table seat_class1(
 create table station1(
     station_id int primary key,
     station_name varchar(20),
-    platforms int
 )
+--3 digit station id
 begin
-insert into station1 values(100,'rjk',4);
-insert into station1 values(101,'abd',12);
-insert into station1 values(102,'brd',8);
-insert into station1 values(103,'srt',9);
-insert into station1 values(104,'mumbai',20);
-insert into station1 values(105,'delhi',25);
+insert into station1 values(100,'rjk');
+insert into station1 values(101,'abd');
+insert into station1 values(102,'brd');
+insert into station1 values(103,'srt');
+insert into station1 values(104,'mumbai');
+insert into station1 values(105,'delhi');
+insert into station1 values(106,'chennai')
+insert into station1 values(107,'kolkatta')
 end
 
 
@@ -62,15 +65,20 @@ create table ticket1(
 create table user1(
     user_id int primary key,
     email_id varchar(50),
-    first_name varchar(20),
-    last_name varchar(20),
+    name varchar(20),
     gender char(1),
     dob date,
-    mobile_no int,
-    
+    mobile_no int,   
 )
-
-
+--user id is 4 digit password for user1
+--user id 1000 name ramesh
+--6 digit mobile no
+begin
+insert into user1 values(1000,'ram@gmail.com','ram','M',982370)
+insert into user1 values(1001,'shyam@gmail.com','shyam','M',123456)
+insert into user1 values(1002,'rahim@gmail.com','rahim','M',235415)
+insert into user1 values(1003,'preeti@gmail.com','preeti','M',432312)
+end;
 
 
 
@@ -89,8 +97,7 @@ create table pnr_number_generation1(
   train_id int refernces train1(train_id),
   sp int references seat_class1(starting_station_id)
   ep int references seat_class1(ending_station_id),
-  class_category references seat_class1(class_catefory)
-  
+  class_category references seat_class1(class_catefory)  
 )
 
 DROP TABLE IF EXISTS `Ticket`;
