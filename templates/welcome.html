@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <style>
+        button {
+            border: 2px solid yellow;
+            color: white;
+            background-color: black;
+            font-size: 30px;
+        }
+        
+        button:hover {
+            border: 2px solid yellow;
+            color: yellow;
+            background-color: black;
+            font-size: 30px;
+        }
+        
+        #form1 {
+            visibility: hidden;
+        }
+        #form2 {
+            visibility: hidden;
+        }
+        #form3 {
+            visibility: true;
+        }
+    </style>
+</head>
+ 
+<body>
+    <button onclick="onClick(this)" id="button1">Admin Login</button>
+    <form action = "http://localhost:5000/welcome" method="POST" id="form1">
+        <fieldset>
+            <legend>Admin Login Information form:</legend> Login Type(do not change):
+            <br>
+            <input type="text" name="name" value="admin" > <br> First Name:
+            <br>
+            <input type="text" name="user_name" value="" >
+            <br> Admin password:
+            <br>
+            <input type="password" name="password"  >
+            <br>
+            <br>
+            <input type="submit" value="Submit"> </fieldset>
+    </form>
+    <button onclick="onClick(this)" id="button2">User Login</button>
+    <form action = "http://localhost:5000/welcome" method="POST" id="form2">
+        <fieldset>
+            <legend>User Login Information form:</legend> Login Type(do not change):
+            <br>
+            <input type="text" name="name" value="user" > <br> First Name:
+            <br>
+            <input type="text" name="user_name" value="" > 
+            <br> user_id:
+            <br>
+            <input type="password" name="password"  >
+            <br>
+            <br>
+            <input type="submit" value="Submit"> </fieldset>
+    </form>
+    <button onclick="onClick(this)" id="button3">Sign up</button>
+    <form  action = "http://localhost:5000/welcome" method="POST" id="form3">
+        <input type="submit" name="submit_button" value="signup">
+
+    </form>
+    
+</body>
+<script>
+    function onClick(x) {
+        if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
+        if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";
+    }
+</script>
+ 
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>About Flask</title>
+   </head>
+   <body>
+      {% extends "template.html" %}
+      {% block content %}
+      <h1> About Flask </h1>
+      <p> Flask is a top Python web framework. </p>
+      <p> Top web apps using the Flask framework. </p>
+      {% endblock %}
+   </body>
+</html>
+Update your home.html as follows:
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Home for Simple Flask Website</title>
+   </head>
+   <body>
+      {% extends "template.html" %}
+      {% block content %}
+      <h1> Building a Simple Flask Website </h1>
+      <p> Flask is a Fun and easy framework</p>
+      <p> Flask and HTML in python looks cool</p>
+      {% endblock %}
+   </body>
+</html>
