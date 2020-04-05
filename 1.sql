@@ -21,6 +21,7 @@ insert into train1 values(10002, 'SaujantaExp3',   103,   102,  18.00,  05.30, '
 insert into train1 values(10003, 'mumtodelhi'  ,   104,   105,  10.00,  22.00, 'Y', 'Y' ,'Y', 'N', 'N', 'N', 'N');
 insert into train1 values(10004, 'mumtosrt'    ,   104,   103,  15.30,  10.00, 'N', 'N' ,'Y', 'N', 'N', 'Y', 'Y');
 insert into train1 values(10005, 'delhitorjk'  ,   105,   100,  9.30,   23.00, 'Y', 'Y' ,'N', 'N', 'N', 'Y', 'N');
+insert into train1 values(10006,  'ontime'     ,   104,   101,  13.30,  05.45, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
 end
 
 
@@ -32,27 +33,35 @@ create table seat_class1(
   sp int references train1(starting_station_id)
   ep int references train1(ending_station_id),
   price int ,
-  class_category char(3),
+  total_seats,
+  booked_seats,
+  class_category varchar(3),
   PRIMARY KEY (train_id, sp, ep, class_category)
 )
+insert into seat_class1 values(10006, 104, 101, 101,  800,  50, 0, 'AC1')
+insert into seat_class1 values(10006, 104, 101, 101,  500,  50, 0, 'AC2')
+insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'AC3')
+insert into seat_class1 values(10006, 104, 101, 101,  200, 100, 0, 'CC')
+insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'EC')
+insert into seat_class1 values(10006, 104, 101, 101,  340, 110, 0, 'SL')
 --here class_category refers to AC1, AC2, AC3, CC,  EC, SL
 
 
 
 create table station1(
     station_id int primary key,
-    station_name varchar(20),
+    station_name varchar(20)
 )
 --3 digit station id
 begin
-insert into station1 values(100,'rjk');
-insert into station1 values(101,'abd');
-insert into station1 values(102,'brd');
-insert into station1 values(103,'srt');
-insert into station1 values(104,'mumbai');
-insert into station1 values(105,'delhi');
-insert into station1 values(106,'chennai')
-insert into station1 values(107,'kolkatta')
+	insert into station1 values(100,'rjk');
+	insert into station1 values(101,'abd');
+	insert into station1 values(102,'brd');
+	insert into station1 values(103,'srt');
+	insert into station1 values(104,'mumbai');
+	insert into station1 values(105,'delhi');
+	insert into station1 values(106,'chennai');
+	insert into station1 values(107,'kolkatta');
 end
 
 
@@ -115,3 +124,68 @@ CREATE TABLE `Ticket` (
   CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`Train_No`) REFERENCES `Train` (`Train_No`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+------------------------------------------------------------------------------------------------------
+--procedure for schedule input is from station id and to station id , date
+--output is table
+
+create or replace function dis_train(s_stat int, e_stat int, tarik date)
+returns table(
+t_id int,
+t_name varchar(20),
+s_time float,
+j_time float
+)
+as $dis_train$
+declare
+dayno int;
+begin
+	select extract(dow from  tarik) into dayno;
+	if(dayno = 0) then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and sun='Y');
+	elsif(dayno = 1)then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and mon='Y');
+	elsif(dayno = 2) then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and tue='Y');
+	elsif(dayno = 3)then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and wed='Y');
+	elsif(dayno = 4)then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and thu='Y');
+	elsif(dayno = 5)then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and fri='Y');
+	elsif(dayno = 6)then
+		return query select train_id,train_name,starting_time,journey_time from train1
+		where(starting_station_id=s_stat and ending_station_id=e_stat and sat='Y');
+	end if;
+end;
+$dis_train$ language plpgsql;
+
+select * from train1
+select dis_train(100,103,'04-05-2020');
+
+
+----function for cheking user id dummy values
+create or replace function check_user_id(u_id int)
+returns int as $check_user_id$
+  declare
+    is_pre int;
+  begin
+    is_pre :=0;
+    select count(*) into is_pre from user1 where user_id=u_id;
+      if(is_pre=1) then
+        raise notice 'Already exists';
+      else
+        raise notice 'New user';
+      end if;
+    return is_pre;
+  end;
+$check_user_id$ language plpgsql; 
+
+select check_user_id(1000);

@@ -33,13 +33,9 @@ def welcome():
            cursor.execute(query)
            user_records = cursor.fetchall()
            for i in user_records:
-              print(i[0])
-              print(i[1])
               if i[0] == int(user_password) and i[1] == user_name :
-                  return render_template('/user_dashboard')  
-
-           #connection.commit()
-           
+                  temp = 1
+                  break
          except (Exception, psycopg2.Error) as error :
            print ("Error while connecting to PostgreSQL", error)
          finally:
@@ -47,18 +43,23 @@ def welcome():
               cursor.close()
               connection.close()
               print("PostgreSQL connection is closed")
-         return redirect(url_for('success',name = "user_name"))
+         print(temp)
+         if (temp==1):
+               print("to pachi")
+               return render_template('user_dashboard.html')
+         else :
+               return render_template('welcome.html')             
        else:
           #print("signup page error")
           return render_template('signup.html')
 
-@app.route('/signup')
+@app.route('/signup.html', methods=['POST','GET'])
 def signup():
    if request.method == 'POST':
       user_signup      = request.form
       print(user_signup)
-      user_id = user_signup.get("id_no")
-      emailid = user_signup["emailid"]
+      user_id = user_signup.get("user_id")
+      emailid = user_signup["email_id"]
       user_name = user_signup["name"]
       gender = user_signup["gender"]
       dob = user_signup["dob"]
@@ -66,9 +67,12 @@ def signup():
       try:
           connection = psycopg2.connect(user = "postgres",password = "yashilpostgresql",host='localhost',port = "5432", database = "postgres")
           cursor = connection.cursor()
-          cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no))
-          connection.commit()
-          print("success")
+          cursor.callproc('check_user_id',[user_id,])
+          dummy = cursor.fetchall()
+          if (dummy == 0) :
+            cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no))
+            connection.commit()
+            print("success in insering new user values")
       except (Exception, psycopg2.Error) as error :
          print ("Error while connecting to PostgreSQL", error)
       finally:
@@ -76,7 +80,10 @@ def signup():
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
-      return redirect(url_for('success',name = user_name))
+         if dummy == 0 :
+            return redirect(url_for('success',name = user_name))
+         else :
+            return render_template('signup.html')
    else:
       return render_template('signup.html')
 
