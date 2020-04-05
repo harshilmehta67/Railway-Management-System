@@ -21,7 +21,10 @@ insert into train1 values(10002, 'SaujantaExp3',   103,   102,  18.00,  05.30, '
 insert into train1 values(10003, 'mumtodelhi'  ,   104,   105,  10.00,  22.00, 'Y', 'Y' ,'Y', 'N', 'N', 'N', 'N');
 insert into train1 values(10004, 'mumtosrt'    ,   104,   103,  15.30,  10.00, 'N', 'N' ,'Y', 'N', 'N', 'Y', 'Y');
 insert into train1 values(10005, 'delhitorjk'  ,   105,   100,  9.30,   23.00, 'Y', 'Y' ,'N', 'N', 'N', 'Y', 'N');
+<<<<<<< HEAD
 insert into train1 values(10006,  'ontime'     ,   104,   101,  13.30,  05.45, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
+=======
+>>>>>>> aaf36fd4f86d07b5b0f4e63eba31db696152b61f
 end
 
 
@@ -50,6 +53,7 @@ insert into seat_class1 values(10006, 104, 101, 101,  340, 110, 0, 'SL')
 
 create table station1(
     station_id int primary key,
+<<<<<<< HEAD
     station_name varchar(20)
 )
 --3 digit station id
@@ -62,6 +66,20 @@ begin
 	insert into station1 values(105,'delhi');
 	insert into station1 values(106,'chennai');
 	insert into station1 values(107,'kolkatta');
+=======
+    station_name varchar(20),
+)
+--3 digit station id
+begin
+insert into station1 values(100,'rjk');
+insert into station1 values(101,'abd');
+insert into station1 values(102,'brd');
+insert into station1 values(103,'srt');
+insert into station1 values(104,'mumbai');
+insert into station1 values(105,'delhi');
+insert into station1 values(106,'chennai')
+insert into station1 values(107,'kolkatta')
+>>>>>>> aaf36fd4f86d07b5b0f4e63eba31db696152b61f
 end
 
 
@@ -83,10 +101,17 @@ create table user1(
 --user id 1000 name ramesh
 --6 digit mobile no
 begin
+<<<<<<< HEAD
 insert into user1 values(1000,'ram@gmail.com','ram','M','01-01-2000',982370)
 insert into user1 values(1001,'shyam@gmail.com','shyam','M','05-05-1987',123456)
 insert into user1 values(1002,'rahim@gmail.com','rahim','M','6-12-2001',235415)
 insert into user1 values(1003,'preeti@gmail.com','preeti','M','02-02-2002',432312)
+=======
+insert into user1 values(1000,'ram@gmail.com','ram','M',982370)
+insert into user1 values(1001,'shyam@gmail.com','shyam','M',123456)
+insert into user1 values(1002,'rahim@gmail.com','rahim','M',235415)
+insert into user1 values(1003,'preeti@gmail.com','preeti','M',432312)
+>>>>>>> aaf36fd4f86d07b5b0f4e63eba31db696152b61f
 end;
 
 
