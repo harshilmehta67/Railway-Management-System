@@ -1,0 +1,48 @@
+<!-- Latest compiled and minified CSS --> <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> <!-- Optional theme --> <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"> <!-- Latest compiled and minified JavaScript --> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<div class="container">
+    <div class="row">
+      <div class="col">
+  
+        <h1>Sign up Page For New User </h1>
+        <hr>
+  
+        <form action = "http://localhost:5000/signup" method="POST">
+  
+          <div class="form-group">
+            <label>Enter Your 4 digit User ID:</label>
+            <input type="number" class="form-control" id="user_id" name="user_id" placeholder="Enter your 4 digit User Id here">
+          </div>
+
+          <div class="form-group">
+            <label>Enter Your Name:</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name here">
+          </div>
+
+          <div class="form-group">
+            <label>Enter Email-ID:</label>
+            <input type="email" class="form-control" id="email_id" name="email_id" placeholder="Enter your email id here">
+          </div>
+
+          <div class="form-group">
+            <label>Enter your 6 digit Mobile number:</label>
+            <input type="number" class="form-control" id="mobile_no" name="mobile_no" placeholder="Enter your 6 digit mobile number here">
+          </div>
+          
+          <div class="form-group">
+            <label>Enter Your Date of birth:</label>
+            <input type="date" class="form-control" id="dob" name="dob" >
+          </div>
+
+          <div class="form-group">
+            <label>Select your Gender:</label>
+            <input type="text" class="form-control" id="gender" name="gender" placeholder="Type M for male or F for Female">
+          </div>
+     
+          <button type="submit" class="btn btn-primary">Sign up</button>
+  
+        </form>
+  
+      </div>
+    </div>
+  </div>

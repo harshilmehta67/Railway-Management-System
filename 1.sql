@@ -74,10 +74,10 @@ create table user1(
 --user id 1000 name ramesh
 --6 digit mobile no
 begin
-insert into user1 values(1000,'ram@gmail.com','ram','M',982370)
-insert into user1 values(1001,'shyam@gmail.com','shyam','M',123456)
-insert into user1 values(1002,'rahim@gmail.com','rahim','M',235415)
-insert into user1 values(1003,'preeti@gmail.com','preeti','M',432312)
+insert into user1 values(1000,'ram@gmail.com','ram','M','01-01-2000',982370)
+insert into user1 values(1001,'shyam@gmail.com','shyam','M','05-05-1987',123456)
+insert into user1 values(1002,'rahim@gmail.com','rahim','M','6-12-2001',235415)
+insert into user1 values(1003,'preeti@gmail.com','preeti','M','02-02-2002',432312)
 end;
 
 

@@ -13,14 +13,27 @@ try:
     #query = "insert into student values(%s,%s)"
     #var = id,name
     #cursor.execute(query,var)
-    
-    cursor.execute(query2)
+    query3 = "select user_id,name from user1"
+    cursor.execute(query3)
     connection.commit()
     print("success  Fecthing Values")
-    # result = cursor.fetchall()
-    # for i in result:
-    #     print(i)
-
+    result = cursor.fetchall()
+    for i in result:
+        print(i[0])
+        print(i[1])
+    connection = psycopg2.connect(user = "postgres",
+                                  password = "yashilpostgresql",
+                                  host='localhost',
+                                  port = "5432",
+                                  database = "postgres")
+    query3 = "select * from user1"
+    cursor.execute(query3)
+    connection.commit()
+    print("success  Fecthing Values")
+    result = cursor.fetchall()
+    for i in result:
+       print(i)
+    
 except (Exception, psycopg2.Error) as error :
     print ("Error while connecting to PostgreSQL", error)
 
@@ -30,3 +43,4 @@ finally:
         connection.close()
         print("PostgreSQL connection is closed")
 #link where i got this from :https://pynative.com/python-postgresql-tutorial/
+#query for day from date select extract(dow from date '08-12-2019');
