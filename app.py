@@ -25,7 +25,7 @@ def welcome():
          user_password = wel_come["password"]
          user_name = wel_come["user_name"]
          try:
-           print("dfdfg")
+           #print("dfdfg")
            connection = psycopg2.connect(user = "postgres",password = "yashilpostgresql",host='localhost',port = "5432", database = "postgres")
            cursor = connection.cursor()
            query = "select user_id,name from user1"
@@ -56,7 +56,7 @@ def welcome():
 def signup():
    if request.method == 'POST':
       user_signup      = request.form
-      print(user_signup)
+      #print(user_signup)
       user_id = user_signup.get("user_id")
       emailid = user_signup["email_id"]
       user_name = user_signup["name"]
@@ -66,10 +66,13 @@ def signup():
       try:
           connection = psycopg2.connect(user = "postgres",password = "yashilpostgresql",host='localhost',port = "5432", database = "postgres")
           cursor = connection.cursor()
-          cursor.callproc('check_user_id',[user_id,])
-          dummy = cursor.fetchall()
-          if (dummy == 0) :
-            cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no))
+          query = "select check_user_id(%s);"
+          user_id = str(user_id)
+          cursor.execute(query,(user_id,))
+          connection.commit()
+          dummy = cursor.fetchone()
+          if ( dummy[0] == 0) :
+            cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no,))
             connection.commit()
             print("success in insering new user values")
       except (Exception, psycopg2.Error) as error :
@@ -79,7 +82,7 @@ def signup():
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
-         if dummy == 0 :
+         if dummy[0] == 0 :
             return redirect(url_for('success',name = user_name))
          else :
             return render_template('signup.html')
