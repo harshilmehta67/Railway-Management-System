@@ -44,11 +44,14 @@ station_id = 111
 #cursor.execute("DELETE FROM station1 WHERE station1.station_id = %s",(station_id,))
 #cursor.execute("DELETE FROM train1 WHERE train1.train_id = 10010")
 #connection.commit()
-cursor.execute("select * from user1")
+sp    = 100
+ep    = 101
+tarik = '08-04-2020'
+query = "select dis_train2(%s,%s,%s)"
+cursor.execute(query,(sp,ep,tarik))
 
 #cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no))
 #connection.commit()
 result = cursor.fetchall()
-for i in result:
-    print(i)
+print(result)
 print("success  Fecthing Values")

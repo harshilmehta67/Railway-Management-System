@@ -33,7 +33,10 @@ def welcome():
                 temp = 1
                 break
          if (temp==1):
-               return render_template('user_dashboard.html')
+            cursor.execute("select station_name,station_id from station1 order by station_name")
+            result = cursor.fetchall()
+            print(result)
+            return render_template('user_dashboard.html',name = user_name, user_id = user_password, value = result)
          else :
                return render_template('welcome.html')             
        else:
@@ -59,16 +62,28 @@ def signup():
         cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no,))
         connection.commit()
         if dummy[0] == 0 :
-            return render_template('user_dashboard.html',name = user_name, user_id = user_id)
+            cursor.execute("select * from station1 order by station_name")
+            result = cursor.fetchall()
+            return render_template('user_dashboard.html',name = user_name, user_id = user_id, value = result)
         else :
             return render_template('signup.html')
       else:
          return render_template('signup.html')
 
 
-@app.route('/user_dashboard<name><user_id>')
-def user_dashboard(name,user_id):
-   print(name,user_id)
+@app.route('/user_knowScedule_bookTicek',methods=['POST','GET'])
+def user_knowSchedule_bookTicket():
+   if request.method == 'POST':
+      data = request.form
+      sp    = data["sp"]
+      ep    = data["ep"]
+      tarik = data["tarik"]
+      query = "select * from dis_train2(%s,%s,%s)"
+
+      cursor.execute(query,(sp,ep,tarik))
+      result = cursor.fetchall()
+      
+      return render_template('user_knowScheduleAndBookTicket.html', value = result)
 # def user_login():
 #    if request.method == 'POST':
 #       user      = request.form

@@ -9,17 +9,17 @@ body {
 }
 
 #main {
-	width: 780px;
-	padding: 20px;
+	width: 1500px;
+	padding: 30px;
 	margin: auto;
 }
 
 table.timecard {
 	margin: auto;
-	width: 600px;
+	width: 800px;
 	border-collapse: collapse;
-	border: 1px solid #fff; /*for older IE*/
-	border-style: hidden;
+	border: 2px solid #fff; /*for older IE*/
+	border-style: true;
 }
 
 table.timecard caption {
@@ -76,31 +76,48 @@ table.timecard tr.even {
 
 <body>
 <div id="main">
-<table class="timecard">
+<table class="timecard" align="right">
     <thead>
     <tr>
         <th>From Station</th>
-        <th>to Station</th>
-        <th>Train ID</th>
+        <th>To Station</th>
         <th>Train Name</th>
         <th>Departure Time </th>
         <th>Journey Time</th>
-        <th>Seat Class AC1</th>
-        <th>Seat Class AC2 </th>
-        <th>Seat Class AC3</th>
-        <th>Seat Class CC</th>
-        <th>Seat Class EC</th>
-        <th>Seat Class SL</th>
-        
-        
-        <th>Name</th>
+		<th>SeatClass AC1 Price</th>
+		<th>SeatClass AC1 Seats Left</th>
+		<th>SeatClass AC2 Price</th>
+		<th>SeatClass AC2 Seats Left</th>
+		<th>SeatClass AC3 Price</th>
+		<th>SeatClass AC2 Seats Left</th>
+		<th>SeatClass CC Price</th>
+		<th>SeatClass CC Seats Left</th>
+		<th>SeatClass EC Price</th>
+		<th>SeatClass EC Seats Left</th>
+		<th>SeatClass SL Price</th>
+		<th>SeatClass SL Seats Left</th>
     </tr>
     </thead>
     <tbody>
-        {% for row in value %} 
+        {% for row in  value %} 
             <tr>
                 <td>{{row[0]}}</td>
-                <td>{{row[1]}}</td>
+				<td>{{row[1]}}</td>
+				<td>{{row[2]}}</td>
+				<td>{{row[3]}}</td>
+				<td>{{row[4]}}</td>
+				<td>{{row[5]}}</td>
+				<td>{{row[6]}}</td>
+				<td>{{row[7]}}</td>
+				<td>{{row[8]}}</td>
+				<td>{{row[9]}}</td>
+				<td>{{row[10]}}</td>
+				<td>{{row[11]}}</td>
+				<td>{{row[12]}}</td>
+				<td>{{row[13]}}</td>
+				<td>{{row[14]}}</td>
+				<td>{{row[15]}}</td>
+				<td>{{row[16]}}</td>                
             </tr>
         {% endfor %}
     </tbody>

@@ -219,14 +219,14 @@ $check_user_id$ language plpgsql;
 select check_user_id(1000);
 
 -----------------function for book seat ------------------------------------------------------------------
-select book_seat(10000,1,'ac1')
+select book_seat(10000,1,'AC1')
 
 create or replace function book_seat(t_id int, days int, categ varchar)
 returns int as $book_seat$
 declare
 che int;
 begin
-	if(categ='ac1') then
+	if(categ='AC1') then
 		select ac1_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
@@ -235,7 +235,7 @@ begin
 			where(train_id = t_id and working_day=days);
 		return ac1_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		end if;
-	elsif(categ='ac2')then
+	elsif(categ='AC2')then
 		select ac2_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
@@ -244,7 +244,7 @@ begin
 			where(train_id = t_id and working_day=days);
 		return ac2_price from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
-	elsif(categ='ac3')then
+	elsif(categ='AC3')then
 		select ac3_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
@@ -253,7 +253,7 @@ begin
 			where(train_id = t_id and working_day=days);
 		return ac3_price from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
-	elsif(categ='cc')then
+	elsif(categ='CC')then
 		select cc_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
@@ -262,7 +262,7 @@ begin
 			where(train_id = t_id and working_day=days);
 		return cc_price from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
-	elsif(categ='ec')then
+	elsif(categ='EC')then
 		select ec_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
@@ -271,7 +271,7 @@ begin
 			where(train_id = t_id and working_day=days);
 		return ec_price from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
-	elsif(categ='sl')then
+	elsif(categ='SL')then
 		select sl_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=0)then
 			raise notice'No seets left';
