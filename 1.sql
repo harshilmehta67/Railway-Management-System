@@ -53,22 +53,22 @@ insert into seat_class2 values(10000, 3, 800,50,0, 500,50,0, 0,0,0, 200,100,0, 3
 insert into seat_class2 values(10000, 5, 800,50,0, 500,50,0, 0,0,0, 200,100,0, 340,110,0, 0,0,0)
 
 --tier1  table is updated to table named as seat_class
-create table seat_class1(
-  train_id int references train1(train_id),
-  sp int references train1(starting_station_id)
-  ep int references train1(ending_station_id),
-  price int ,
-  total_seats,
-  booked_seats,
-  class_category varchar(3),
-  PRIMARY KEY (train_id, sp, ep, class_category)
-)
-insert into seat_class1 values(10006, 104, 101, 101,  800,  50, 0, 'AC1')
-insert into seat_class1 values(10006, 104, 101, 101,  500,  50, 0, 'AC2')
-insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'AC3')
-insert into seat_class1 values(10006, 104, 101, 101,  200, 100, 0, 'CC')
-insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'EC')
-insert into seat_class1 values(10006, 104, 101, 101,  340, 110, 0, 'SL')
+-- create table seat_class1(
+--   train_id int references train1(train_id),
+--   sp int references train1(starting_station_id)
+--   ep int references train1(ending_station_id),
+--   price int ,
+--   total_seats,
+--   booked_seats,
+--   class_category varchar(3),
+--   PRIMARY KEY (train_id, sp, ep, class_category)
+-- )
+-- insert into seat_class1 values(10006, 104, 101, 101,  800,  50, 0, 'AC1')
+-- insert into seat_class1 values(10006, 104, 101, 101,  500,  50, 0, 'AC2')
+-- insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'AC3')
+-- insert into seat_class1 values(10006, 104, 101, 101,  200, 100, 0, 'CC')
+-- insert into seat_class1 values(10006, 104, 101, 101,    0,   0, 0, 'EC')
+-- insert into seat_class1 values(10006, 104, 101, 101,  340, 110, 0, 'SL')
 --here class_category refers to AC1, AC2, AC3, CC,  EC, SL
 
 
