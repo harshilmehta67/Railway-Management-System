@@ -231,7 +231,7 @@ begin
 	if(categ='AC1') then
 		select ac1_total_seats,ac1_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return ac1_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set ac1_booked_seats=ac1_booked_seats+1
@@ -242,7 +242,7 @@ begin
 	elsif(categ='AC2')then
 		select ac2_total_seats,ac2_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return ac2_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set ac2_booked_seats=ac2_booked_seats+1
@@ -253,7 +253,7 @@ begin
 	elsif(categ='AC3')then
 		select ac3_total_seats,ac3_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return ac3_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set ac3_booked_seats=ac3_booked_seats+1
@@ -263,7 +263,7 @@ begin
 	elsif(categ='CC')then
 		select cc_total_seats,cc_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return cc_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set cc_booked_seats=cc_booked_seats+1
@@ -273,7 +273,7 @@ begin
 	elsif(categ='EC')then
 		select ec_total_seats,ec1_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return ec_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set ec_booked_seats=ec_booked_seats+1
@@ -283,7 +283,7 @@ begin
 	elsif(categ='SL')then
 		select sl_total_seats,sl_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
-			raise notice'No seets left';
+			raise notice'No seats left';
 			return sl_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
 			update seat_class2 set sl_booked_seats=sl_booked_seats+1
