@@ -122,13 +122,18 @@
             <input type="number" name="sp" placeholder="from station ID" > <br> 
             To Station ID:
             <input type="number" name="ep" placeholder="To Station ID" > <br> 
-            Select Your Journey Date
+            Select Your Journey Date:
             <input type="date" name="tarik"  ><br>
+            Your Name:
+            <input type="text" name="user_name" value = {{ name }} > <br>
+            Your User ID:
+            <input type="number" name="user_id" value = {{ user_id }} > <br>
+            
             <input type="submit" value="Submit"> </fieldset>
     </form>
     <br>
     <button onclick="onClick(this)" id="button2">Know Your Ticket </button>
-    <form action = "http://localhost:5000/welcome" method="POST" id="form2">
+    <form action = "http://localhost:5000/" method="POST" id="form2">
         <fieldset>
             <legend> e-Ticket </legend> 
             Enter PNR number of you Ticket

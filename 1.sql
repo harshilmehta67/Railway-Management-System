@@ -218,6 +218,8 @@ $check_user_id$ language plpgsql;
 
 select check_user_id(1000);
 
+
+
 -----------------function for book seat ------------------------------------------------------------------
 select book_seat(10000,1,'AC1')
 
@@ -225,66 +227,74 @@ create or replace function book_seat(t_id int, days int, categ varchar)
 returns int as $book_seat$
 declare
 che int;
+baki_che int;
 begin
 	if(categ='AC1') then
-		select ac1_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select ac1_total_seats,ac1_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return ac1_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set ac1_total_seats=ac1_total_seats-1,ac1_booked_seats=ac1_booked_seats+1
+			update seat_class2 set ac1_booked_seats=ac1_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return ac1_price from seat_class2 where(train_id = t_id and working_day=days) ;
+			return ac1_price+100000 from seat_class2 where(train_id = t_id and working_day=days) ;
 		end if;
+
 	elsif(categ='AC2')then
-		select ac2_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select ac2_total_seats,ac2_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return ac2_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set ac2_total_seats=ac2_total_seats-1,ac2_booked_seats=ac2_booked_seats+1
+			update seat_class2 set ac2_booked_seats=ac2_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return ac2_price from seat_class2 where(train_id = t_id and working_day=days);
+			return ac2_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
+
 	elsif(categ='AC3')then
-		select ac3_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select ac3_total_seats,ac3_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return ac3_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set ac3_total_seats=ac3_total_seats-1,ac3_booked_seats=ac3_booked_seats+1
+			update seat_class2 set ac3_booked_seats=ac3_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return ac3_price from seat_class2 where(train_id = t_id and working_day=days);
+			return ac3_price+1000000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	elsif(categ='CC')then
-		select cc_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select cc_total_seats,cc_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return cc_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set cc_total_seats=cc_total_seats-1,cc_booked_seats=cc_booked_seats+1
+			update seat_class2 set cc_booked_seats=cc_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return cc_price from seat_class2 where(train_id = t_id and working_day=days);
+			return cc_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	elsif(categ='EC')then
-		select ec_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select ec_total_seats,ec1_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return ec_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set ec_total_seats=ec_total_seats-1,ec_booked_seats=ec_booked_seats+1
+			update seat_class2 set ec_booked_seats=ec_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return ec_price from seat_class2 where(train_id = t_id and working_day=days);
+			return ec_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	elsif(categ='SL')then
-		select sl_total_seats into che from seat_class2 where(train_id = t_id and working_day=days);
-		if(che=0)then
+		select sl_total_seats,sl_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		if(che=baki_che)then
 			raise notice'No seets left';
+			return sl_price from seat_class2 where(train_id = t_id and working_day=days) ;
 		else
-			update seat_class2 set sl_total_seats=sl_total_seats-1,sl_booked_seats=sl_booked_seats+1
+			update seat_class2 set sl_booked_seats=sl_booked_seats+1
 			where(train_id = t_id and working_day=days);
-		return sl_price from seat_class2 where(train_id = t_id and working_day=days);
+			return sl_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	else
 		raise notice 'No such option';
 		return 0;
 	end if;
-	return 0;
 end;
 $book_seat$
 language plpgsql

@@ -75,15 +75,50 @@ def signup():
 def user_knowSchedule_bookTicket():
    if request.method == 'POST':
       data = request.form
+      print(data)
       sp    = data["sp"]
       ep    = data["ep"]
       tarik = data["tarik"]
       query = "select * from dis_train2(%s,%s,%s)"
-
+      user_name = data["user_name"]
+      user_id = data["user_id"]
       cursor.execute(query,(sp,ep,tarik))
       result = cursor.fetchall()
       
-      return render_template('user_knowScheduleAndBookTicket.html', value = result)
+      return render_template('user_knowScheduleAndBookTicket.html', value = result, user_name = user_name, user_id = user_id, tarik = tarik)
+
+@app.route('/user_knowScedule_bookTicek',methods=['POST','GET'])
+def user_bookTicket():
+   if request.method == 'POST':
+      data = request.form
+      print(data)
+      user_id = data["user_id"]
+      train_id = data["train_id"]
+      tarik = data["tarik"]
+
+      query = "select starting_station_id,ending_station_id from train1 where train_id = %s"
+      cursor.execute(query,(train_id,))
+      result = cursor.fetchall()
+      
+      from_station_id = result[0][0]
+      to_station_id = result[0][1]
+
+      query = "select station_name from station1 where station_id = %s"
+      cursor.execute(query,(from_station_id,))
+      from_station = cursor.fetchone()
+      print(from_station)
+
+      query = "select station_name from station1 where station_id = %s"
+      cursor.execute(query,(to_station_id,))
+      to_station = cursor.fetchone()
+      print(to_station)
+      #convert this date to day in the variable divas
+      #create a sql input(train_id,day,seat_category)
+      #output is (train_id,from_station_name,to_station_name,date,ticket_fair,status,)
+      ticketFair = "select book_ticket"
+      return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category)
+
+
 # def user_login():
 #    if request.method == 'POST':
 #       user      = request.form

@@ -47,11 +47,7 @@ station_id = 111
 sp    = 100
 ep    = 101
 tarik = '08-04-2020'
-query = "select dis_train2(%s,%s,%s)"
-cursor.execute(query,(sp,ep,tarik))
+query = "select book_seat"
+cursor.execute(query)
 
-#cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no))
-#connection.commit()
-result = cursor.fetchall()
-print(result)
 print("success  Fecthing Values")
