@@ -116,40 +116,20 @@ end;
 
 
 
-
+--about ticket for user, user with ticket is passenger so he cna know his details thorugh this
+-- keep status as confirm or reserved
 create table  passenger1 (
   passenger_id int references user1(user_id),
-  pnr int references pnr_number_generation1(pnr),
+  pnr SERIAL   primary key,
   first_name varchar(20) ,
-  last_name varchar(20)  ,
-  gender char(1) NOT NULL,
-  mobile_no char(10) DEFAULT NULL,  
-) 
---to do how to generate pnr
-create table pnr_number_generation1(
-  pnr int;
-  train_id int refernces train1(train_id),
-  sp int references seat_class1(starting_station_id)
-  ep int references seat_class1(ending_station_id),
-  class_category references seat_class1(class_catefory)  
+  train_id int references train1(train_id),
+  dayno int,
+  seat_category varchar(3),
+  status varchar(20)
 )
-
-DROP TABLE IF EXISTS `Ticket`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Ticket` (
-  `Ticket_No` int(10) NOT NULL AUTO_INCREMENT,
-  `Train_No` int(6) NOT NULL,
-  `Date_of_Journey` date NOT NULL,
-  `Username` varchar(15) NOT NULL,
-  PRIMARY KEY (`Ticket_No`),
-  KEY `Username` (`Username`),
-  KEY `Train_No` (`Train_No`),
-  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE,
-  CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`Train_No`) REFERENCES `Train` (`Train_No`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
+--generate sequence of pnr from 100.....
+CREATE SEQUENCE pnr_seq start 100000000 increment 1;
+INSERT INTO passenger1 VALUES (1808,nextval('pnr_seq'),'Shilpa',10000,3,'AC1','confirm');
 
 ------------------------------------------------------------------------------------------------------
 --procedure for schedule: input is from station id and to station id , date

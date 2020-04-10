@@ -95,6 +95,12 @@ def user_bookTicket():
       user_id = data["user_id"]
       train_id = data["train_id"]
       tarik = data["tarik"]
+      seat_category = data["seat_category"]
+      query = "select extract(dow from  TIMESTAMP %s)"
+      cursor.execute(query,(tarik,))
+      result = cursor.fetchone()
+      print(int(result[0]))
+      divas = int(result[0])
 
       query = "select starting_station_id,ending_station_id from train1 where train_id = %s"
       cursor.execute(query,(train_id,))
@@ -105,18 +111,22 @@ def user_bookTicket():
 
       query = "select station_name from station1 where station_id = %s"
       cursor.execute(query,(from_station_id,))
-      from_station = cursor.fetchone()
-      print(from_station)
+      from_station_name = cursor.fetchone()
+      print(from_station_name)
 
       query = "select station_name from station1 where station_id = %s"
       cursor.execute(query,(to_station_id,))
-      to_station = cursor.fetchone()
-      print(to_station)
+      to_station_name = cursor.fetchone()
+      print(to_station_name)
       #convert this date to day in the variable divas
       #create a sql input(train_id,day,seat_category)
       #output is (train_id,from_station_name,to_station_name,date,ticket_fair,status,)
-      ticketFair = "select book_ticket"
-      return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category)
+      query = "select book_seat(%s,%s,%s)"
+      cursor.execute(query,(train_id,divas,seat_category))
+      connection.commit()
+      ticketFair = cursor.fetchone()
+
+      return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category,ticket_fair = ticket_fair)
 
 
 # def user_login():

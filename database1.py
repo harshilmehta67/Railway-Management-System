@@ -46,8 +46,17 @@ station_id = 111
 #connection.commit()
 sp    = 100
 ep    = 101
-tarik = '08-04-2020'
-query = "select book_seat"
-cursor.execute(query)
 
+
+#connection.commit()
+query = "select extract(dow from  TIMESTAMP '10-04-2020')"
+cursor.execute(query)
+result = cursor.fetchone()
+print(int(result[0]))
+
+query = "select book_seat(%s,%s,%s)"
+trian_id = 10000
+divas = int(result[0])
+seat_category = 'CC'
+cursor.execute(query,(trian_id,divas,seat_category))
 print("success  Fecthing Values")
