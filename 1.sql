@@ -277,3 +277,77 @@ begin
 end;
 $book_seat$
 language plpgsql
+
+------total revenue generated for a particular train on a day--------------------------------------
+create or replace function revenue(t_id int, dofweek int) returns int
+as $revenue$
+begin
+return (seat_class2.ac1_price*seat_class2.ac1_booked_seats) +
+(seat_class2.ac2_price*seat_class2.ac2_booked_seats) +
+(seat_class2.ac3_price*seat_class2.ac3_booked_seats) +
+(seat_class2.cc_price*seat_class2.cc_booked_seats) +
+(seat_class2.ec_price*seat_class2.ec_booked_seats) +
+(seat_class2.sl_price*seat_class2.sl_booked_seats)
+from seat_class2 where train_id=t_id and working_day=dofweek;
+end;
+$revenue$
+language plpgsql
+
+select revenue(10001,2)
+
+
+
+-----------------------------------train running between two dates---------------------------------------------------------------------
+create or replace function train_btwn_date(f_date date, t_date date)
+returns table(
+t_id int,
+t_name varchar(20),
+s_station int,
+e_station int,
+day_int int
+)
+as $train_btwn_date$
+declare
+day1 int;
+day2 int;
+begin
+select extract(dow from f_date) into day1;
+select extract(dow from t_date) into day2;
+if(day1<day2) then
+return query select distinct train1.train_id,train1.train_name,train1.starting_station_id,
+train1.ending_station_id,seat_class2.working_day from train1,seat_class2
+where seat_class2.working_day >= day1 and seat_class2.working_day <= day2;
+else
+return query select distinct train1.train_id,train1.train_name,train1.starting_station_id,
+train1.ending_station_id,seat_class2.working_day from train1,seat_class2
+where seat_class2.working_day >= day2 and seat_class2.working_day <= 7 and
+seat_class2.working_day >= 0 and seat_class2.working_day <= day1;
+end if;
+end;
+$train_btwn_date$
+language plpgsql
+select train_btwn_date('11-04-2020','15-04-2020')
+
+
+------------------------------------trains running between two stations----------------------------------------------
+create or replace function train_btwn(stat1 varchar, stat2 varchar)
+returns table(
+t_id int,
+t_name varchar(20),
+on_mon char(1),
+on_tue char(1),
+on_wed char(1),
+on_thr char(1),
+on_fri char(1),
+on_sat char(1),
+on_sun char(1)
+) as $train_btwn$
+begin
+return query select train_id,train_name,mon,tue,wed,thu,fri,sat,sun from train1
+where(starting_station_id = (select station_id from station1 where station_name=stat1)
+and ending_station_id = (select station_id from station1 where station_name=stat2));
+end;
+$train_btwn$
+language plpgsql
+
+select train_btwn('mumbai','delhi')

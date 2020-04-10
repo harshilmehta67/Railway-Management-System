@@ -49,14 +49,10 @@ ep    = 101
 
 
 #connection.commit()
-query = "select extract(dow from  TIMESTAMP '10-04-2020')"
-cursor.execute(query)
-result = cursor.fetchone()
-print(int(result[0]))
+query = "select train_btwn_date(%s,%s)"
+f_date = '11-04-2020'
+t_date = '13-04-2020'
+cursor.execute(query,(f_date,t_date))
+train_name = cursor.fetchall()
+print(train_name)
 
-query = "select book_seat(%s,%s,%s)"
-trian_id = 10000
-divas = int(result[0])
-seat_category = 'CC'
-cursor.execute(query,(trian_id,divas,seat_category))
-print("success  Fecthing Values")

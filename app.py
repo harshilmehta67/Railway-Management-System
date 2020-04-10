@@ -126,33 +126,74 @@ def user_bookTicket():
       connection.commit()
       ticketFair = cursor.fetchone()
 
-      return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category,ticket_fair = ticket_fair)
+     # return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category,ticket_fair = ticket_fair)
+
+@app.route('/trainBetweenTwoStations' , methods = ['POST','GET'])
+def trainBetweenTwoStations(): 
+   if request.method == 'POST':
+      data = request.form
+      f_station = data["f_station"]
+      t_station = data["t_station"]
+      query = "select * from train_btwn(%s,%s)"
+      cursor.execute(query,(f_station,t_station))
+      result = cursor.fetchall()
+      return render_template('trainBetweenTwoStation.html', value = result)
+
+@app.route('/trainBetweenTwoDates', methods = ['POST','GET'])
+def count_trainBetweenTwoDates():
+   if request.method == 'POST':
+      data = request.form
+      f_date = data["f_date"]
+      t_date = data["t_date"]
+      query = "select * from train_btwn_date(%s,%s)"
+      cursor.execute(query,(f_date,t_date))
+      result = cursor.fetchall()
+      return render_template('trainBetweenTwoDates.html', value = result)
 
 
-# def user_login():
-#    if request.method == 'POST':
-#       user      = request.form
-#       user_id = user.get("id_no")
-#       user_name = user["name"]
-#       try:
-#           connection = psycopg2.connect(user = "postgres",password = "yashilpostgresql",host='localhost',port = "5432", database = "postgres")
-
-#           cursor = connection.cursor()
-#           cursor.execute("insert into student values(%s,%s)", (user_id, user_name))
-#           connection.commit()
-#           print("success")
-#       except (Exception, psycopg2.Error) as error :
-#          print ("Error while connecting to PostgreSQL", error)
-#       finally:
-#          if(connection):
-#             cursor.close()
-#             connection.close()
-#             print("PostgreSQL connection is closed")
-#       return redirect(url_for('success',name = user_name))
-#    else:
-#       user = request.args.get('nm')
-#       return redirect(url_for('success',name = user_name))
-
+@app.route('/revenue',methods=['POST','GET'])
+def revenue():
+   if request.method == 'POST':
+      data = request.form
+      print(data)
+      train_id = data["train_id"]
+      query = "select revenue(%s,%s)"
+      total_revenue = 0
+      for keys in data.keys():
+         if keys == 'mon':
+            cursor.execute(query,(train_id,1))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'tue':
+            cursor.execute(query,(train_id,2))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'wed':
+            cursor.execute(query,(train_id,3))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'thu':
+            cursor.execute(query,(train_id,4))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'fri':
+            cursor.execute(query,(train_id,5))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'sat':
+            cursor.execute(query,(train_id,6))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+         if keys == 'sun':
+            cursor.execute(query,(train_id,7))
+            result = cursor.fetchone()
+            total_revenue = total_revenue + result[0]
+      query = "select train_name from train1 where train_id = %s"
+      cursor.execute(query,(train_id,))
+      train_name = cursor.fetchone()[0]
+      print(total_revenue)
+      print(train_name)
+      return render_template('revenue.html', train_id = train_id, train_name = train_name,rev = total_revenue)
 
 
 @app.route('/<name> <user_id>')

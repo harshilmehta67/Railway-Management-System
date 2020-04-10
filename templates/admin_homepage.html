@@ -26,7 +26,13 @@
             visibility: hidden;
         }
         #form3 {
-            visibility: true;
+            visibility: hidden;
+        }
+        #form4 {
+            visibility: hidden;
+        }
+        #form5 {
+            visibility: hidden;
         }
     </style>
 </head>
@@ -62,17 +68,69 @@
             <br>
             <input type="submit" value="Submit"> </fieldset>
     </form>
+
+    <button onclick="onClick(this)" id="button3">Know the Revenue generated of Train</button>
+    <form action = "http://localhost:5000/revenue" method="POST" id="form3">
+        <fieldset>
+            <legend>Revenue Generated Information</legend> 
+            Enter Train ID:
+            <input type="number" name="train_id" > <br> 
+            Tick the Day <br>
+            Monday:
+            <input type="checkbox" name="mon" > 
+            Tuesday:
+            <input type="checkbox" name="tue" >  
+            Wednesday:
+            <input type="checkbox" name="wed" >
+            Thursday:
+            <input type="checkbox" name="thu" > 
+            Friday:
+            <input type="checkbox" name="fri" > 
+            Saturday:
+            <input type="checkbox" name="sat" > 
+            Sunday:
+            <input type="checkbox" name="sun"> <br> 
+            <br>
+            <input type="submit" value="Submit"> </fieldset>
+    </form>
     <button onclick="onClick(this)" id="button3">Sign up</button>
     <form  action = "http://localhost:5000/welcome" method="POST" id="form3">
         <input type="submit"  id="name" name="name" value="signup">
 
     </form>
     
+    <button onclick="onClick(this)" id="button4">Know the Total Training running between Two Date </button>
+    <form action = "http://localhost:5000/trainBetweenTwoDates" method="POST" id="form4">
+        <fieldset>
+            <legend>Total Training running between Two Date Information form:</legend>
+            From Date
+            <input type="date" name="f_date" > <br> 
+            To Date
+            <input type="date" name="t_date" > 
+            <br>
+            <input type="submit" value="Submit"> </fieldset>
+    </form>
+
+    <button onclick="onClick(this)" id="button5">Know the Total Training running between Two sations </button>
+    <form action = "http://localhost:5000/trainBetweenTwoStations" method="POST" id="form5">
+        <fieldset>
+            <legend>Total Training running between Two Stations Information form:</legend>
+            From Station Name
+            <input type="text" name="f_station" > <br> 
+            To Station Name
+            <input type="text" name="t_station" > 
+            <br>
+            <input type="submit" value="Submit"> </fieldset>
+    </form>
+
 </body>
 <script>
     function onClick(x) {
         if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
         if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";
+        if (x.id === 'button3') document.getElementById("form3").style.visibility = "visible";
+        if (x.id === 'button4') document.getElementById("form4").style.visibility = "visible";
+        if (x.id === 'button5') document.getElementById("form5").style.visibility = "visible";
     }
 </script>
  

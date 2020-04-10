@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+	
+<title>Welcome</title>
+		<style>
+			button {
+				border: 2px solid yellow;
+				color: white;
+				background-color: black;
+				font-size: 30px;
+			}
+			.button1 {
+  				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+			}
+			button:hover {
+				border: 2px solid yellow;
+				color: yellow;
+				background-color: black;
+				font-size: 30px;
+			}
+			
+			#form1 {
+				visibility: hidden;
+			}
+		</style>
+<style type="text/css">
+body {
+	background-color: #f6f6ff;
+	font-family: Calibri, Myriad;
+}
+
+#main {
+	width: 1000px;
+	padding: 0px;
+	margin: left;
+}
+
+table.timecard {
+	margin: left;
+	width: 800px;
+	border-collapse: collapse;
+	border: 2px solid #fff; /*for older IE*/
+	border-style: true;
+}
+
+table.timecard caption {
+	background-color: #f79646;
+	color: #fff;
+	font-size: x-large;
+	font-weight: bold;
+	letter-spacing: .3em;
+}
+
+table.timecard thead th {
+	padding: 6px;
+	background-color: #fde9d9;
+	font-size: large;
+}
+
+table.timecard thead th#thDay {
+	width: 40%;	
+}
+
+table.timecard thead th#thRegular, table.timecard thead th#thOvertime, table.timecard thead th#thTotal {
+	width: 20%;
+}
+
+table.timecard th, table.timecard td {
+	padding: 3px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #f79646 #ccc;
+}
+
+table.timecard td {
+	text-align: right;
+}
+
+table.timecard tbody th {
+	text-align: left;
+	font-weight: normal;
+}
+
+table.timecard tfoot {
+	font-weight: bold;
+	font-size: large;
+	background-color: #687886;
+	color: #fff;
+}
+
+table.timecard tr.even {
+	background-color: #fde9d9;
+}
+</style>
+<title>Employee Timecard</title>
+</head>
+
+<body>
+<div id="main">
+<table class="timecard" align="right">
+    <thead>
+    <tr>
+        <th>Train ID</th>
+        <th>Train Name </th>
+        <th>Monday</th>
+        <th> Tuesday</th>
+        <th> Wednesday </th>
+        <th> Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+        <th>sunday</th>
+        
+
+    </tr>
+    </thead>
+    <tbody>
+        {% for row in  value %} 
+            <tr>
+                <td>{{row[0]}}</td>
+				<td>{{row[1]}}</td>
+				<td>{{row[2]}}</td>
+				<td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>    
+                <td>{{row[5]}}</td>
+				<td>{{row[6]}}</td>
+				<td>{{row[7]}}</td>
+				<td>{{row[8]}}</td>          
+            </tr>
+		{% endfor %}
+		<br> <br>
+	</tbody>
+	
+</table>
+</div>
+</html>
