@@ -154,7 +154,6 @@ CREATE TABLE `Ticket` (
 ------------------------------------------------------------------------------------------------------
 --procedure for schedule: input is from station id and to station id , date
 --output is table
-
 create or replace function dis_train2(s_stat int, e_stat int, tarik date)
 returns table(
 s_stat_name varchar(20),
@@ -185,18 +184,18 @@ begin
 	(select station_name from station1 where station_id=s_stat),
 	(select station_name from station1 where station_id=e_stat),
 	train1.train_name,train1.starting_time,train1.journey_time,
-	seat_class2.ac1_price,seat_class2.ac1_total_seats,
-	seat_class2.ac2_price,seat_class2.ac2_total_seats,
-	seat_class2.ac3_price,seat_class2.ac3_total_seats,
-	seat_class2.cc_price,seat_class2.cc_total_seats,
-	seat_class2.ec_price,seat_class2.ec_total_seats,
-	seat_class2.sl_price,seat_class2.sl_total_seats
+	seat_class2.ac1_price,seat_class2.ac1_total_seats-seat_class2.ac1_booked_seats,
+	seat_class2.ac2_price,seat_class2.ac2_total_seats-seat_class2.ac2_booked_seats,
+	seat_class2.ac3_price,seat_class2.ac3_total_seats-seat_class2.ac3_booked_seats,
+	seat_class2.cc_price,seat_class2.cc_total_seats-seat_class2.cc_booked_seats,
+	seat_class2.ec_price,seat_class2.ec_total_seats-seat_class2.ec_booked_seats,
+	seat_class2.sl_price,seat_class2.sl_total_seats-seat_class2.sl_booked_seats
 	from train1,seat_class2,station1
 	where(train1.starting_station_id=s_stat and train1.ending_station_id=e_stat and train1.train_id=seat_class2.train_id 
 		  and seat_class2.working_day=dayno);
 end;
 $dis_train2$ language plpgsql;
-select dis_train2(100,101,'04-08-2020')
+select dis_train2(100,101,'13-05-2020')
 
 
 ----function for cheking user id dummy values---------------------------------------------------------------
