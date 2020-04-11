@@ -22,9 +22,9 @@ def welcome():
          admin_password  = wel_come["password"]
          admin_name      = wel_come["user_name"]
          if (admin_password == "admin123" and admin_name == "admin"):
-            return render_template('/admin.html')
+            return render_template('admin_homepage.html')
          else:
-               return render_template('/welcome.html')
+               return render_template('welcome.html')
 
        elif (wel_come["name"] == "user"):
          user_password = wel_come["password"]
@@ -332,6 +332,18 @@ def seat_category():
                connection.commit()
 
         return render_template('admin_amend_data.html')
+
+
+@app.route('/deleteUser' , methods = ['POST','GET'])
+def deleteUser(): 
+   if request.method == 'POST':
+      data = request.form
+      user_id = data["user_id"]
+      query = "delete from user1 where user_id=%s"
+      cursor.execute(query,(user_id,))
+      connection.commit()
+      return render_template('admin_amend_data.html')
+
 
 @app.route('/trainBetweenTwoStations' , methods = ['POST','GET'])
 def trainBetweenTwoStations(): 

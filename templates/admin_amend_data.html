@@ -56,10 +56,10 @@
             <input type="number" name="ep"  > <br> 
             <br>
             Starting time:
-            <input type="number" name="st"  > <br> 
+            <input type="text" name="st"  > <br> 
             <br>
             Journey Time:
-            <input type="number" name="jt" > <br> 
+            <input type="text" name="jt" > <br> 
             <br>
             Monday:
             <input type="checkbox" name="mon" > 
@@ -113,12 +113,12 @@
 	</form>
 	
 	<button onclick="onClick(this)" id="button5">Delete User</button>
-    <form  action = "http://localhost:5000/delete_user" method="POST" id="form5">
+    <form  action = "http://localhost:5000/deleteUser" method="POST" id="form5">
         <fieldset>
 			<legend>Delete User:</legend>
 			User ID
             <input type="number" name="user_id"  > <br> 
-			<input type="submit"   name="button" value="Delete_station"> </fieldset>
+			<input type="submit"   name="button" value="Delete User"> </fieldset>
 	</form>
 	
 	
@@ -202,7 +202,7 @@
             <input type="hidden"   name="booked_seat_SL"  value="0">
             
             <br> 
-			<input type="submit"   name="button" > </fieldset>
+			<input type="submit"   name="button" value="ADD"> </fieldset>
 			
 		</form>
 	
