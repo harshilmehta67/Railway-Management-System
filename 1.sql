@@ -1,3 +1,5 @@
+checking 1 2 3 
+
 create table train1(
     train_id int primary key,
     train_name varchar(20),
