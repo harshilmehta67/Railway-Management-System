@@ -1,144 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Contact V11</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-<!--===============================================================================================-->
-</head>
-<body>
+<html>
+<body style="background-color:powderblue;">
 
+<h1>Total Ticket Details Are :</h1>
+<h2>User ID                 :{{user_id}}</h2>
+<h2>User Name               :{{user_name}}</h2>
+<h2>Train ID                 :{{train_id}}</h2>
+<h2>Train Name               :{{train_name}}</h2>
+<h2>From Station Name                 :{{from_station_name}}</h2>
+<h2>To Station Name               :{{to_station_name}}</h2>
+<h2> PNR Number               :{{passenger_pnrno}}</h2>
+<h2> Date Of Journey               :{{doj}}</h2>
+<h2>Seat Category                 :{{seat_category}}</h2>
+<h2>Ticket Fair              :{{ticket_fair}}</h2>
+<h2> Status               :{{status}}</h2>
+<form action = "http://localhost:5000/user_bookTicket" method="POST" >	
+		<input class="button1" value="Log-out" type="submit" />
+</form>
+<br>
+<br>
 
-	<div class="container-contact100" style="background-image: url('images/bg-01.jpg');">
-		<div class="wrap-contact100">
-			<form class="contact100-form validate-form">
-				<span class="contact100-form-title">
-					Your e-Ticket
-				</span>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-					<span class="label-input100"> Your Name *</span>
-					<input class="input100" type="text" name="user_name" value="{{user_name}}">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Your User ID *</span>
-					<input class="input100" type="text" name="user_id" value="{{user_id}}"">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-					<span class="label-input100"> From Station Name *</span>
-					<input class="input100" type="text" name="from_station_name" value="{{from_station_name}}">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> To Station Name *</span>
-					<input class="input100" type="text" name="to_station_name" value="{{to_station_name}}">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Seat Category *</span>
-					<input class="input100" type="text" name="seat_category" value="{{seat_category}}">
-				</div>
-				
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Ticket Fair *</span>
-					<input class="input100" type="text" name="price" value="{{ticket_fair}}">
-				</div>
-
-				<div class="wrap-input100">
-					<span class="label-input100">Your PNR Number</span>
-					<input class="input100" type="text" name="pnr" value="{{passenger_pnrno}}">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Date Of Journey *</span>
-					<input class="input100" type="text" name="doj" value="{{doj}}">
-				</div>
-
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Status*</span>
-					<input class="input100" type="text" name="status" value="{{status}}">
-				</div>
-
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Train ID *</span>
-					<input class="input100" type="text" name="train_name" value="{{train_id}}">
-				</div>
-
-				<div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<span class="label-input100"> Train Name *</span>
-					<input class="input100" type="text" name="train_name" value="{{train_name}}">
-				</div>
-
-
-				<div class="container-contact100-form-btn">
-					<div class="wrap-contact100-form-btn">
-						<div class="contact100-form-bgbtn"></div>
-						<button class="contact100-form-btn">
-							Go Back 
-						</button>
-					</div>
-				</div>
-
-				<div class="container-contact100-form-btn">
-					<div class="wrap-contact100-form-btn">
-						<div class="contact100-form-bgbtn"></div>
-						<button class="contact100-form-btn">
-							Cancel Ticket
-						</button>
-					</div>
-				</div>
-			</form>
-		</div>
-
-		<span class="contact100-more">
-				Call us on +001 345 6178
-		</span>
-	</div>
-
-
-
-	<div id="dropDownSelect1"></div>
-
-<!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-23581568-13');
-</script>
+<form action = "http://localhost:5000/user_bookTicket" method="POST" >	
+	Enter PNR Number to cancel Ticket
+	<input type="text" name="pnr"  > 
+	<input class="button1" value="Cancel Ticket" type="submit" />
+</form>
 
 </body>
 </html>
