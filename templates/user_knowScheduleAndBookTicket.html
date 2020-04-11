@@ -105,7 +105,8 @@ table.timecard tr.even {
     <tr>
         <th>From Station</th>
         <th>To Station</th>
-        <th>Train Name</th>
+		<th>Train Name</th>
+		<th>Train ID</th>
         <th>Departure Time </th>
         <th>Journey Time</th>
 		<th>SeatClass AC1 Price</th>
@@ -141,7 +142,9 @@ table.timecard tr.even {
 				<td>{{row[13]}}</td>
 				<td>{{row[14]}}</td>
 				<td>{{row[15]}}</td>
-				<td>{{row[16]}}</td>                
+				<td>{{row[16]}}</td>     
+				<td>{{row[17]}}</td>     
+				           
             </tr>
 		{% endfor %}
 		<br> <br>

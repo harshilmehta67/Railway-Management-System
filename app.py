@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, request,  render_template
 import psycopg2
+from flask import flash
 app = Flask(__name__)
 
 
@@ -28,6 +29,7 @@ def welcome():
          query = "select user_id,name from user1"
          cursor.execute(query)
          user_records = cursor.fetchall()
+         temp = 0
          for i in user_records:
             if i[0] == int(user_password) and i[1] == user_name :
                 temp = 1
@@ -52,23 +54,31 @@ def signup():
       gender = user_signup["gender"]
       dob = user_signup["dob"]
       mobile_no = user_signup["mobile_no"]
-      
-      query = "select check_user_id(%s);"
-      user_id = str(user_id)
-      cursor.execute(query,(user_id,))
-      #connection.commit()
-      dummy = cursor.fetchone()
-      if ( dummy[0] == 0) :
-        cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no,))
-        connection.commit()
-        if dummy[0] == 0 :
-            cursor.execute("select * from station1 order by station_name")
-            result = cursor.fetchall()
-            return render_template('user_dashboard.html',name = user_name, user_id = user_id, value = result)
-        else :
+      try:
+         query = "select check_user_id(%s);"
+         user_id = str(user_id)
+         cursor.execute(query,(user_id,))
+         #connection.commit()
+         dummy = cursor.fetchone()
+         if ( dummy[0] == 0) :
+           cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no,))
+           connection.commit()
+           if dummy[0] == 0 :
+               cursor.execute("select * from station1 order by station_name")
+               result = cursor.fetchall()
+               return render_template('user_dashboard.html',name = user_name, user_id = user_id, value = result)
+           else :
+               return render_template('signup.html')
+         else:
             return render_template('signup.html')
-      else:
-         return render_template('signup.html')
+      except psycopg2.Error as e:
+         print(e)
+         print(user_id)
+         print("failed")
+         #flash('Looks like you have changed your name!')
+         message = "invalid Credentials Please go Back to Main Page"
+         return render_template('signup.html', message = message)
+
 
 
 @app.route('/user_knowScedule_bookTicket',methods=['POST','GET'])

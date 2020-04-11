@@ -119,17 +119,21 @@ end;
 --about ticket for user, user with ticket is passenger so he cna know his details thorugh this
 -- keep status as confirm or reserved
 create table  passenger1 (
-  passenger_id int references user1(user_id),
-  pnr SERIAL   primary key,
-  first_name varchar(20) ,
-  train_id int references train1(train_id),
-  dayno int,
-  seat_category varchar(3),
-  status varchar(20)
+  	pnr SERIAL   primary key,
+	passenger_id int references user1(user_id),
+  	train_id int references train1(train_id),
+  	dayno int,
+  	seat_category varchar(3),
+  	status char(1)
 )
+CREATE SEQUENCE pnr_seq start 100000000 increment 1;
+
+insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC1','C')
+insert into passenger1 values (nextval('pnr_seq'),1001,10000,1,'AC1','W')
+insert into passenger1 values (nextval('pnr_seq'),1002,10000,1,'AC1','W')
+insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC2','C')
 --generate sequence of pnr from 100.....
 CREATE SEQUENCE pnr_seq start 100000000 increment 1;
-INSERT INTO passenger1 VALUES (1808,nextval('pnr_seq'),'Shilpa',10000,3,'AC1','confirm');
 
 ------------------------------------------------------------------------------------------------------
 --procedure for schedule: input is from station id and to station id , date
@@ -182,7 +186,7 @@ $dis_train2$ language plpgsql;
 select dis_train2(100,101,'20-04-2020')
 
 
-----function for cheking user id dummy values---------------------------------------------------------------
+-----------------------------function for cheking user id dummy values---------------------------------------------------------------
 create or replace function check_user_id(u_id int)
 returns int as $check_user_id$
   declare
@@ -356,6 +360,7 @@ language plpgsql
 
 select train_btwn('mumbai','delhi')
 
+-----------------------------------------------function for deleting ticket------------------------------
 
 -----------------------------------------------------TRIGGERS--------------------------------------------------------
 -------------------------------Trigger of cheking user input variables-----------------------------------------------
@@ -382,6 +387,8 @@ language plpgsql;
 create trigger check_user1
 before insert or update on user1
 	for each row execute procedure check_user1_proc();
+	
+
 
 ----------------------------------------Trigger of cheking train data input-----------------------------------------
 create or replace function check_train1_proc() returns trigger as
@@ -409,4 +416,61 @@ before insert or update on train1
 	for each row execute procedure check_train1_proc();
 
 insert into train1 values('107',null,101,101,25,2.5,'N','N','N','N','N','N','N');
+
+----------------------------------------cancel ticket function----------------------------------------------
+create or replace function cancel_ticket(ticket int) 
+returns int as
+$cancel_ticket$
+declare
+	che int;
+	categ varchar(3);
+	sta char;
+begin
+	sta = status from passenger1 where pnr = ticket;
+	if(sta = 'W') then
+		delete from passenger1 where pnr=ticket;
+		return 0;
+	end if;
+	categ = seat_category from passenger1 where pnr = ticket;
+	che = min(pnr) from passenger1 where
+	train_id=(select train_id from passenger1 where pnr=ticket) and
+	dayno=(select dayno from passenger1 where pnr=ticket) and
+	seat_category=(select seat_category from passenger1 where pnr=ticket) and
+	status='W';
+	if(che is NULL) then
+		if(categ='AC1') then
+			update seat_class2 set ac1_booked_seats = ac1_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		elsif(categ='AC2') then
+			update seat_class2 set ac2_booked_seats = ac2_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		elsif(categ='AC3') then
+			update seat_class2 set ac3_booked_seats = ac3_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		elsif(categ='CC') then
+			update seat_class2 set cc_booked_seats = cc_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		elsif(categ='EC') then
+			update seat_class2 set ec_booked_seats = ec_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		elsif(categ='SL') then
+			update seat_class2 set sl_booked_seats = sl_booked_seats-1 where
+			train_id=(select train_id from passenger1 where pnr=ticket) and
+			working_day=(select dayno from passenger1 where pnr=ticket);
+		end if;
+		delete from passenger1 where pnr=ticket;
+		return 0;
+	else 
+		update passenger1 set status='C' where pnr=che;
+	end if;
+	delete from passenger1 where pnr=ticket;
+	return 0;
+end;
+$cancel_ticket$
+language plpgsql;
 
