@@ -3,7 +3,7 @@
  
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Manage Data</title>
     <style>
         button {
             border: 2px solid yellow;
@@ -26,25 +26,23 @@
             visibility: hidden;
         }
         #form3 {
-            visibility: true;
+            visibility: hidden;
         }
         #form4 {
-            visibility: true;
+            visibility: hidden;
         }#form5 {
-            visibility: true;
+            visibility: hidden;
         }#form6 {
-            visibility: true;
-        }
-        #form7 {
-            visibility: true;
+            visibility: hidden;
         }
     </style>
 </head>
 
 <body>
     <button onclick="onClick(this)" id="button1">Add Train</button>
-    <form action = "http://localhost:5000/admin_amend_data" method="POST" id="form1">
+    <form action = "http://localhost:5000/add_train" method="POST" id="form1">
         <fieldset>
+			<legend>Add Train Information:</legend> 
             Train ID:
             <input type="number" name="train_id" > <br>
             <br>
@@ -52,10 +50,10 @@
             <input type="text" name="train_name" > <br> 
             <br>
             From Station ID:
-            <input type="number" name="from_station_id" > <br> 
+            <input type="number" name="sp" > <br> 
             <br>
             To station ID:
-            <input type="number" name="to_station_id"  > <br> 
+            <input type="number" name="ep"  > <br> 
             <br>
             Starting time:
             <input type="number" name="st"  > <br> 
@@ -64,43 +62,151 @@
             <input type="number" name="jt" > <br> 
             <br>
             Monday:
-            <input type="checkbox" name="name" > 
+            <input type="checkbox" name="mon" > 
             Tuesday:
-            <input type="checkbox" name="name" >  
+            <input type="checkbox" name="tue" >  
             Wednesday:
-            <input type="checkbox" name="name" >
+            <input type="checkbox" name="wed" >
             Thursday:
-            <input type="checkbox" name="name" > 
+            <input type="checkbox" name="thu" > 
             Friday:
-            <input type="checkbox" name="name" > 
+            <input type="checkbox" name="fri" > 
             Saturday:
-            <input type="checkbox" name="name" > 
+            <input type="checkbox" name="sat" > 
             Sunday:
-            <input type="checkbox" name="name"> <br> 
+            <input type="checkbox" name="sun"> <br> 
             <br>
-            <input type="submit" value="Submit"> </fieldset>
-    </form>
-    <button onclick="onClick(this)" id="button2">Delete Train</button>
-    <form action = "http://localhost:5000/admin_knowTrain" method="POST" id="form2">
-        <fieldset>
-            <legend>User Login Information form:</legend> Login Type(do not change):
-            <br>
-            <input type="text" name="name" value="user" > <br> First Name:
-            <br>
-            <input type="text" name="user_name" value="" > 
-            <br> user_id:
-            <br>
-            <input type="password" name="password"  >
-            <br>
-            <br>
-            <input type="submit" value="Submit"> </fieldset>
-    </form>
-    <button onclick="onClick(this)" id="button3">Sign up</button>
-    <form  action = "http://localhost:5000/welcome" method="POST" id="form3">
-        <input type="submit"  id="name" name="name" value="signup">
+            
+			<input type="submit"   name="button" value="Add_train"> </fieldset>
+	</form>
+	
 
-    </form>
-    
+    <button onclick="onClick(this)" id="button2">Delete Train</button>
+    <form action = "http://localhost:5000/delete_train" method="POST" id="form2">
+        <fieldset>
+			<legend>Delete Train Information:</legend>	
+			Train ID
+            <input type="number" name="train_id"  > <br> 
+			<input type="submit"   name="button" value="Delete_train"> </fieldset>
+	</form>
+	
+
+    <button onclick="onClick(this)" id="button3">Add Station</button>
+    <form  action = "http://localhost:5000/add_station" method="POST" id="form3">
+        <fieldset>
+			<legend>Add station:</legend>
+			Station ID:
+			<input type="number" name="station_id"  > <br> 
+			Station Name:
+			<input type="text" name="station_name"  > <br> 
+			<input type="submit"   name="button" value="Add_station"> </fieldset>
+	</form>
+	
+	
+	<button onclick="onClick(this)" id="button4">Delete Station</button>
+	<form  action = "http://localhost:5000/delete_station" method="POST" id="form4">
+        <fieldset>
+			<legend>Delete station:</legend>
+			Station ID
+            <input type="number" name="station_id"  > <br> 
+			<input type="submit"   name="button" value="Delete_station"> </fieldset>
+	</form>
+	
+	<button onclick="onClick(this)" id="button5">Delete User</button>
+    <form  action = "http://localhost:5000/delete_user" method="POST" id="form5">
+        <fieldset>
+			<legend>Delete User:</legend>
+			User ID
+            <input type="number" name="user_id"  > <br> 
+			<input type="submit"   name="button" value="Delete_station"> </fieldset>
+	</form>
+	
+	
+	<button onclick="onClick(this)" id="button6">Add Seat Category in a Train</button>
+    <form  action = "http://localhost:5000/seat_category" method="POST" id="form6">
+        <fieldset>
+			<legend>Seat Category:</legend>	
+			Train ID
+			<input type="number" name="train_id"  > <br> 
+			Monday:
+            <input type="checkbox" name="mon" > 
+            Tuesday:
+            <input type="checkbox" name="tue" >  
+            Wednesday:
+            <input type="checkbox" name="wed" >
+            Thursday:
+            <input type="checkbox" name="thu" > 
+            Friday:
+            <input type="checkbox" name="fri" > 
+            Saturday:
+            <input type="checkbox" name="sat" > 
+            Sunday:
+            <input type="checkbox" name="sun"> <br> 
+            <br>
+			Seat Category
+			<input type="text" name="seat_category_AC1"  value="AC1" > 
+			Seat Price
+			<input type="number"   name="seat_price_AC1" > 
+			Total Seat
+            <input type="number"   name="total_seat_AC1" > 
+            <input type="hidden"   name="booked_seat_AC1"  value="0">
+            
+            <br>
+
+            Seat Category
+			<input type="text" name="seat_category_AC2"  value="AC2" > 
+			Seat Price
+			<input type="number"   name="seat_price_AC2" > 
+			Total Seat
+            <input type="number"   name="total_seat_AC2" > 
+            <input type="hidden"   name="booked_seat_AC2" value="0" >
+            
+            <br>
+
+            Seat Category
+			<input type="text" name="seat_category_AC3"  value="AC3" > 
+			Seat Price
+			<input type="number"   name="seat_price_AC3" > 
+			Total Seat
+            <input type="number"   name="total_seat_AC3" > 
+            <input type="hidden"   name="booked_seat_AC3" value="0" >
+            
+            <br>
+
+            Seat Category
+			<input type="text" name="seat_category_CC"  value="CC" > 
+			Seat Price
+			<input type="number"   name="seat_price_CC" > 
+			Total Seat
+            <input type="number"   name="total_seat_CC" > 
+            <input type="hidden"   name="booked_seat_CC"  value="0">
+            
+            <br>
+
+            Seat Category
+			<input type="text" name="seat_category_EC"  value="EC" > 
+			Seat Price
+			<input type="number"   name="seat_price_EC" > 
+			Total Seat
+            <input type="number"   name="total_seat_EC" > 
+            <input type="hidden"   name="booked_seat_EC"  value="0">
+            
+            <br>
+
+            Seat Category
+			<input type="text" name="seat_category_SL"  value="SL" > 
+			Seat Price
+			<input type="number"   name="seat_price_SL" > 
+			Total Seat
+            <input type="number"   name="total_seat_SL" > 
+            <input type="hidden"   name="booked_seat_SL"  value="0">
+            
+            <br> 
+			<input type="submit"   name="button" > </fieldset>
+			
+		</form>
+	
+	
     
 </body>
 <script>
@@ -111,8 +217,6 @@
         if (x.id === 'button4') document.getElementById("form4").style.visibility = "visible";
         if (x.id === 'button5') document.getElementById("form5").style.visibility = "visible";
         if (x.id === 'button6') document.getElementById("form6").style.visibility = "visible";
-        if (x.id === 'button7') document.getElementById("form7").style.visibility = "visible";
-        
     }
 </script>
  

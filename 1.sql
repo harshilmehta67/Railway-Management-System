@@ -139,6 +139,7 @@ returns table(
 s_stat_name varchar(20),
 e_stat_name varchar(20),
 t_name varchar(20),
+t_id int,
 s_time float,
 j_time float,
 ac1_p int,
@@ -147,7 +148,7 @@ ac2_p int,
 ac2_s int,
 ac3_p int,
 ac3_s int,
-cc_p int,
+cc_p int,			
 cc_s int,
 ec_p int,
 ec_s int,
@@ -158,12 +159,15 @@ as $dis_train2$
 declare
 dayno int;
 begin
+	if(tarik<current_date) then
+		raise exception 'Date invalid';
+	end if;
 	select extract(dow from  tarik) into dayno;
 	return query
 	select distinct 
 	(select station_name from station1 where station_id=s_stat),
 	(select station_name from station1 where station_id=e_stat),
-	train1.train_name,train1.starting_time,train1.journey_time,
+	train1.train_name,train1.train_id,train1.starting_time,train1.journey_time,
 	seat_class2.ac1_price,seat_class2.ac1_total_seats-seat_class2.ac1_booked_seats,
 	seat_class2.ac2_price,seat_class2.ac2_total_seats-seat_class2.ac2_booked_seats,
 	seat_class2.ac3_price,seat_class2.ac3_total_seats-seat_class2.ac3_booked_seats,
@@ -175,7 +179,7 @@ begin
 		  and seat_class2.working_day=dayno);
 end;
 $dis_train2$ language plpgsql;
-select dis_train2(100,101,'13-05-2020')
+select dis_train2(100,101,'20-04-2020')
 
 
 ----function for cheking user id dummy values---------------------------------------------------------------
@@ -351,3 +355,58 @@ $train_btwn$
 language plpgsql
 
 select train_btwn('mumbai','delhi')
+
+
+-----------------------------------------------------TRIGGERS--------------------------------------------------------
+-------------------------------Trigger of cheking user input variables-----------------------------------------------
+create or replace function check_user1_proc() returns trigger as
+$check_user1_proc$
+begin
+	if(new.user_id <1000 or new.user_id>9999) then
+		raise exception 'User ID invalid';
+	end if;
+	if(new.name is NULL) then
+		raise exception 'Name not written';
+	end if;
+	if(new.gender <> 'F' and new.gender <> 'M') then
+		raise exception 'No such Gender ';
+	end if;
+	if(new.mobile_no >999999 or new.mobile_no<100000) then
+		raise exception 'Mobile number invalid';
+	end if;
+	return new;
+end;
+$check_user1_proc$
+language plpgsql;
+
+create trigger check_user1
+before insert or update on user1
+	for each row execute procedure check_user1_proc();
+
+----------------------------------------Trigger of cheking train data input-----------------------------------------
+create or replace function check_train1_proc() returns trigger as
+$train_user1_proc$
+begin
+	if(new.train_name is NULL) then
+		raise exception 'Train name not written';
+	end if;
+	if(new.starting_station_id = new.ending_station_id) then
+		raise exception 'Train is having same starting station and ending station';
+	end if;
+	if(new.starting_time > 24 or new.starting_time < 0) then
+		raise exception 'Starting time is invalid';
+	end if;
+	if(new.mon='N' and new.tue='N' and new.wed='N' and new.thu='N' and new.fri='N' and new.sat='N' and new.sun='N')then
+		raise exception 'Train is not working on any day';
+	end if;
+	return new;
+end;
+$train_user1_proc$
+language plpgsql;
+
+create trigger check_train1
+before insert or update on train1
+	for each row execute procedure check_train1_proc();
+
+insert into train1 values('107',null,101,101,25,2.5,'N','N','N','N','N','N','N');
+

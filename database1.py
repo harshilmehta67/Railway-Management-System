@@ -54,5 +54,27 @@ f_date = '11-04-2020'
 t_date = '13-04-2020'
 cursor.execute(query,(f_date,t_date))
 train_name = cursor.fetchall()
-print(train_name)
 
+
+user_id = 1100
+query = "select name from user1 where user_id=%s"
+cursor.execute(query,(user_id,))
+user_name = cursor.fetchone()
+print(user_name)
+user_name = user_name[0]
+
+train_id = 10000
+divas = 1
+seat_category = 'AC1'
+
+query = "select book_seat(%s,%s,%s)"
+cursor.execute(query,(train_id,divas,seat_category))
+ticketFair = cursor.fetchone()
+if int(ticketFair[0]) > 100000 :
+   query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'confirm')"
+   cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+   connection.commit()
+else:
+   query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'reserved')"
+   cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+   connection.commit()

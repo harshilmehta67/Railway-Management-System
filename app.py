@@ -71,11 +71,10 @@ def signup():
          return render_template('signup.html')
 
 
-@app.route('/user_knowScedule_bookTicek',methods=['POST','GET'])
+@app.route('/user_knowScedule_bookTicket',methods=['POST','GET'])
 def user_knowSchedule_bookTicket():
    if request.method == 'POST':
       data = request.form
-      print(data)
       sp    = data["sp"]
       ep    = data["ep"]
       tarik = data["tarik"]
@@ -87,19 +86,18 @@ def user_knowSchedule_bookTicket():
       
       return render_template('user_knowScheduleAndBookTicket.html', value = result, user_name = user_name, user_id = user_id, tarik = tarik)
 
-@app.route('/user_knowScedule_bookTicek',methods=['POST','GET'])
+@app.route('/user_bookTicket',methods=['POST','GET'])
 def user_bookTicket():
-   if request.method == 'POST':
+   if request.method == 'POST' or 'GET':
       data = request.form
-      print(data)
       user_id = data["user_id"]
       train_id = data["train_id"]
       tarik = data["tarik"]
       seat_category = data["seat_category"]
+
       query = "select extract(dow from  TIMESTAMP %s)"
       cursor.execute(query,(tarik,))
       result = cursor.fetchone()
-      print(int(result[0]))
       divas = int(result[0])
 
       query = "select starting_station_id,ending_station_id from train1 where train_id = %s"
@@ -112,21 +110,184 @@ def user_bookTicket():
       query = "select station_name from station1 where station_id = %s"
       cursor.execute(query,(from_station_id,))
       from_station_name = cursor.fetchone()
-      print(from_station_name)
+      from_station_name = from_station_name[0]
 
       query = "select station_name from station1 where station_id = %s"
       cursor.execute(query,(to_station_id,))
       to_station_name = cursor.fetchone()
-      print(to_station_name)
+      to_station_name = to_station_name[0]
       #convert this date to day in the variable divas
       #create a sql input(train_id,day,seat_category)
       #output is (train_id,from_station_name,to_station_name,date,ticket_fair,status,)
+      
+      query = "select name from user1 where user_id=%s"
+      cursor.execute(query,(user_id,))
+      user_name = cursor.fetchone()
+      user_name = user_name[0]
       query = "select book_seat(%s,%s,%s)"
       cursor.execute(query,(train_id,divas,seat_category))
-      connection.commit()
-      ticketFair = cursor.fetchone()
+      ticket_fair = cursor.fetchone()
+      ticket_fair = int(ticket_fair[0])
+      if ticket_fair > 100000 :
+         query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'confirm')"
+         cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+         connection.commit()
+         ticket_fair = ticket_fair - 100000
+      else:
+         query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'reserved')"
+         cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+         connection.commit()
 
-     # return render_template('user_eTicket.html', status,fair_paid, user_id,train_id,from_station,to_station,tarik,pnr_status,seat_category,ticket_fair = ticket_fair)
+
+      query = "select pnr from passenger1 where passenger_id = %s"
+      cursor.execute(query,(user_id,))
+      passenger_pnrno = cursor.fetchone()
+      passenger_pnrno = passenger_pnrno[0]
+
+      query = "select status from passenger1 where passenger_id = %s"
+      cursor.execute(query,(user_id,))
+      status = cursor.fetchone()
+      status = status[0]
+
+      query = "select train_name from train1 where train_id = %s"
+      cursor.execute(query,(train_id,))
+      train_name = cursor.fetchone()
+      train_name = train_name[0]
+
+      return render_template('user_eTicket.html',user_name = user_name, user_id = user_id, from_station_name = from_station_name, to_station_name = to_station_name, seat_category = seat_category, ticket_fair = ticket_fair, passenger_pnrno=passenger_pnrno, doj= tarik, status=status,train_id= train_id, train_name=train_name)
+      
+
+@app.route('/admin_amend_data', methods=['POST','GET'])
+def admin_amend_data():
+   if request.method == 'POST':
+      return render_template('admin_amend_data.html')
+
+@app.route('/add_train', methods=['POST', 'GET'])
+def add_train():
+    if request.method == 'POST':
+        details = request.form
+      #   print(details)
+        train_id = details["train_id"]
+        train_name = details["train_name"]
+        sp = details["sp"]
+        ep = details["ep"]
+        st = details["st"]
+        jt = details["jt"]
+        d1 , d2 , d3 , d4 , d5 , d6 ,d7 = ['N']*7
+        for keys in details.keys():
+         if keys == 'mon':
+            d1 = 'Y'
+            #print("onf")
+         if keys == 'tue':
+            d2 = 'Y'
+         if keys == 'wed':
+            d3 = 'Y'
+         if keys == 'thu':
+            d4 = 'Y'
+         if keys == 'fri':
+            d5 = 'Y'
+         if keys == 'sat':
+            d6 = 'Y'
+         if keys == 'sun':
+            d7 = 'Y'
+        cursor.execute("insert into train1 values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(train_id,train_name,sp,ep,st,jt,d1,d2,d3,d4,d5,d6,d7))
+        connection.commit()
+        return render_template('admin_amend_data.html')
+
+@app.route('/delete_train', methods=['POST', 'GET'])
+def delete_train():
+    if request.method == 'POST':
+        details = request.form
+        #print(details)
+        train_id = details["train_id"]
+        print(train_id)
+        cursor.execute("DELETE FROM train1 WHERE train1.train_id = %s",(train_id,))
+        connection.commit()
+        return render_template('admin_amend_data.html')
+
+
+@app.route('/add_station', methods=['POST', 'GET'])
+def add_station():
+    if request.method == 'POST':
+        details = request.form
+        #print(details)
+        #print(train_id)
+        station_id = details["station_id"]
+        station_name = details["station_name"]
+        cursor.execute("insert into station1 values(%s,%s)",(station_id,station_name))
+        connection.commit()
+        return render_template('admin_amend_data.html')
+
+@app.route('/delete_station', methods=['POST', 'GET'])
+def delete_station():
+    if request.method == 'POST':
+        details = request.form
+        print(details)
+        station_id = details["station_id"]
+        print(station_id)
+        cursor.execute("DELETE FROM station1 WHERE station1.station_id = %s",(station_id,))
+        connection.commit()
+        return render_template('/login.html')
+
+@app.route('/seat_category', methods=['POST', 'GET'])
+def seat_category():
+    if request.method == 'POST':
+        data = request.form
+        
+        train_id = data["train_id"]
+
+        ac1_p = data["seat_price_AC1"] 
+        ac1_s = data["total_seat_AC1"]
+        ac1_b = data["booked_seat_AC1"]
+
+        ac2_p = data["seat_price_AC2"] 
+        ac2_s = data["total_seat_AC2"]
+        ac2_b = data["booked_seat_AC2"]
+
+        ac3_p = data["seat_price_AC3"] 
+        ac3_s = data["total_seat_AC3"]
+        ac3_b = data["booked_seat_AC3"]
+
+
+        cc_p = data["seat_price_CC"] 
+        cc_s = data["total_seat_CC"]
+        cc_b = data["booked_seat_CC"]
+
+        ec_p = data["seat_price_EC"] 
+        ec_s = data["total_seat_EC"]
+        ec_b = data["booked_seat_EC"]
+        
+        sl_p = data["seat_price_SL"] 
+        sl_s = data["total_seat_SL"]
+        sl_b = data["booked_seat_SL"]
+
+        query = "insert into seat_class2 values(%s,%s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s,%s,%s, %s,%s,%s)"
+        #insert into seat_class2 values(10000, 1, 800,50,0, 500,50,0, 0,0,0, 200,100,0, 340,110,0, 0,0,0)
+
+        for keys in data.keys():
+            if keys == 'mon':
+               cursor.execute(query,(train_id,1, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+            if keys == 'tue':
+               cursor.execute(query,(train_id,2, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+            if keys == 'wed':
+               cursor.execute(query,(train_id,3, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+            if keys == 'thu':
+               cursor.execute(query,(train_id,4, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+            if keys == 'fri':
+               cursor.execute(query,(train_id,5, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()   
+            if keys == 'sat':
+               cursor.execute(query,(train_id,6, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+            if keys == 'sun':
+               cursor.execute(query,(train_id,7, ac1_p,ac1_s,ac1_b, ac2_p,ac2_s,ac2_b, ac3_p,ac3_s,ac3_b, cc_p,cc_s,cc_b, ec_p,ec_s,ec_b, sl_p,sl_s,sl_b,))
+               connection.commit()
+
+        return render_template('admin_amend_data.html')
 
 @app.route('/trainBetweenTwoStations' , methods = ['POST','GET'])
 def trainBetweenTwoStations(): 
