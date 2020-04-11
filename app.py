@@ -8,6 +8,10 @@ app = Flask(__name__)
 def home():
     return render_template('/welcome.html')
 
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    if request.method == 'POST':
+       return render_template('welcome.html')
 
 @app.route('/welcome', methods=['POST', 'GET'])
 def welcome():
@@ -18,7 +22,6 @@ def welcome():
          admin_password  = wel_come["password"]
          admin_name      = wel_come["user_name"]
          if (admin_password == "admin123" and admin_name == "admin"):
-            print("admin login success")
             return render_template('/admin.html')
          else:
                return render_template('/welcome.html')
@@ -37,7 +40,6 @@ def welcome():
          if (temp==1):
             cursor.execute("select station_name,station_id from station1 order by station_name")
             result = cursor.fetchall()
-            print(result)
             return render_template('user_dashboard.html',name = user_name, user_id = user_password, value = result)
          else :
                return render_template('welcome.html')             
@@ -139,13 +141,13 @@ def user_bookTicket():
       ticket_fair = cursor.fetchone()
       ticket_fair = int(ticket_fair[0])
       if ticket_fair > 100000 :
-         query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'confirm')"
-         cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+         query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'C')"
+         cursor.execute(query,(user_id,train_id,divas,seat_category,))
          connection.commit()
          ticket_fair = ticket_fair - 100000
       else:
-         query = "insert into passenger1 values(%s,nextval('pnr_seq'),%s,%s,%s,%s,'reserved')"
-         cursor.execute(query,(user_id,user_name,train_id,divas,seat_category,))
+         query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'W')"
+         cursor.execute(query,(user_id,train_id,divas,seat_category,))
          connection.commit()
 
 
@@ -163,6 +165,12 @@ def user_bookTicket():
       cursor.execute(query,(train_id,))
       train_name = cursor.fetchone()
       train_name = train_name[0]
+
+      if status == 'C':
+         status = 'CONFIRMED'
+      else:
+         status = 'RESERVED'
+
 
       return render_template('user_eTicket.html',user_name = user_name, user_id = user_id, from_station_name = from_station_name, to_station_name = to_station_name, seat_category = seat_category, ticket_fair = ticket_fair, passenger_pnrno=passenger_pnrno, doj= tarik, status=status,train_id= train_id, train_name=train_name)
       
@@ -237,7 +245,33 @@ def delete_station():
         print(station_id)
         cursor.execute("DELETE FROM station1 WHERE station1.station_id = %s",(station_id,))
         connection.commit()
-        return render_template('/login.html')
+        return render_template('admin_amend_data.html')
+
+@app.route('/cancelTicket1', methods=['POST','GET'])
+def cancelTicket1():
+   if request.method == 'POST':
+      data = request.form
+      print(data)
+      pnr_no = data["pnr"]
+      user_name= data["user_name"]
+      user_id = data["user_id"]
+      query = "select cancel_ticket(%s)"
+      cursor.execute(query,(pnr_no,))
+      connection.commit()
+      cursor.execute("select * from station1 order by station_name")
+      result = cursor.fetchall()
+      return render_template('user_dashboard.html',name = user_name, user_id = user_id, value = result)
+
+
+@app.route('/bookedTickets', methods=['POST', 'GET'])
+def bookedTickets():
+    if request.method == 'POST':
+        data = request.form
+        user_id = data["user_id"]
+        query = "select * from bookedTickets(%s)"
+        cursor.execute(query,(user_id,))
+        result = cursor.fetchall()
+        return render_template('bookedTickets.html',value = result)
 
 @app.route('/seat_category', methods=['POST', 'GET'])
 def seat_category():

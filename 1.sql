@@ -475,3 +475,29 @@ end;
 $cancel_ticket$
 language plpgsql;
 
+-------------------------------------------------------delete user------------------------------
+create or replace function delete_user() returns trigger as
+$delete_user$
+declare
+	che int;
+	c_delete_user cursor for select pnr from passenger1 where passenger_id=old.user_id;
+	rec_user passenger1.pnr%type;
+begin
+	open c_delete_user;
+	loop
+	fetch c_delete_user into rec_user;
+		exit when not found;
+		che = cancel_ticket(rec_user);
+		delete from passenger1 where pnr=rec_user;
+	end loop;
+	close c_delete_user;
+	return old;
+end;
+$delete_user$
+language plpgsql;
+
+create trigger delete_user
+before delete on user1
+	for each row execute procedure delete_user();
+
+delete from user1 where user_id=1808

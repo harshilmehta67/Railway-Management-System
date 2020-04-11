@@ -3,7 +3,9 @@
  
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Welcome to Railway Management System</title>
+    
+    <marquee> <h1>Welcome To Railway Management System</h1> </marquee>
     <style>
         button {
             border: 2px solid yellow;
@@ -26,12 +28,81 @@
             visibility: hidden;
         }
         #form3 {
-            visibility: true;
+            visibility: hidden;
         }
     </style>
 </head>
- 
-<body>
+<style type="text/css">
+    body {
+        background-color: lightgreen;
+        font-family: Calibri, Myriad;
+    }
+    
+    #main {
+        width: 1000px;
+        padding: 0px;
+        margin: left;
+    }
+    
+    table.timecard {
+        margin: left;
+        width: 800px;
+        border-collapse: collapse;
+        border: 2px solid #fff; /*for older IE*/
+        border-style: true;
+    }
+    
+    table.timecard caption {
+        background-color: #f79646;
+        color: #fff;
+        font-size: x-large;
+        font-weight: bold;
+        letter-spacing: .3em;
+    }
+    
+    table.timecard thead th {
+        padding: 6px;
+        background-color: #fde9d9;
+        font-size: large;
+    }
+    
+    table.timecard thead th#thDay {
+        width: 40%;	
+    }
+    
+    table.timecard thead th#thRegular, table.timecard thead th#thOvertime, table.timecard thead th#thTotal {
+        width: 20%;
+    }
+    
+    table.timecard th, table.timecard td {
+        padding: 3px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #f79646 #ccc;
+    }
+    
+    table.timecard td {
+        text-align: right;
+    }
+    
+    table.timecard tbody th {
+        text-align: left;
+        font-weight: normal;
+    }
+    
+    table.timecard tfoot {
+        font-weight: bold;
+        font-size: large;
+        background-color: #687886;
+        color: #fff;
+    }
+    
+    table.timecard tr.even {
+        background-color: #fde9d9;
+    }
+    </style>
+<body >
+    
     <button onclick="onClick(this)" id="button1">Admin Login</button>
     <form action = "http://localhost:5000/welcome" method="POST" id="form1">
         <fieldset>
@@ -60,7 +131,7 @@
             <input type="password" name="password"  >
             <br>
             <br>
-            <input type="submit" value="Submit"> </fieldset>
+            <input type="submit" value="Login"> </fieldset>
     </form>
     <button onclick="onClick(this)" id="button3">Sign up</button>
     <form  action = "http://localhost:5000/welcome" method="POST" id="form3">
@@ -73,6 +144,7 @@
     function onClick(x) {
         if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
         if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";
+        if (x.id === 'button3') document.getElementById("form3").style.visibility = "visible";
     }
 </script>
  

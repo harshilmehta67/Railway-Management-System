@@ -2,9 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<h3> Welcome {{ user_name }}!</p>
-	<h3> Your id: {{ user_id }}</p>
-<title>Welcome</title>
+	
+<title>Booked Tickets Details</title>
+        <h1>Booked Tickets Details</h1>
 		<style>
 			button {
 				border: 2px solid yellow;
@@ -28,19 +28,19 @@
 		</style>
 <style type="text/css">
 body {
-	background-color:lightgreen;
+	background-color: #f6f6ff;
 	font-family: Calibri, Myriad;
 }
 
 #main {
-	width: 1450px;
-	padding: 2px;
+	width: 1000px;
+	padding: 0px;
 	margin: left;
 }
 
 table.timecard {
 	margin: left;
-	width: 500px;
+	width: 800px;
 	border-collapse: collapse;
 	border: 2px solid #fff; /*for older IE*/
 	border-style: true;
@@ -103,24 +103,18 @@ table.timecard tr.even {
 <table class="timecard" align="right">
     <thead>
     <tr>
-        <th>From Station</th>
-        <th>To Station</th>
-		<th>Train Name</th>
-		<th>Train ID</th>
-        <th>Departure Time </th>
-        <th>Journey Time</th>
-		<th>SeatClass AC1 Price</th>
-		<th>SeatClass AC1 Seats Left</th>
-		<th>SeatClass AC2 Price</th>
-		<th>SeatClass AC2 Seats Left</th>
-		<th>SeatClass AC3 Price</th>
-		<th>SeatClass AC2 Seats Left</th>
-		<th>SeatClass CC Price</th>
-		<th>SeatClass CC Seats Left</th>
-		<th>SeatClass EC Price</th>
-		<th>SeatClass EC Seats Left</th>
-		<th>SeatClass SL Price</th>
-		<th>SeatClass SL Seats Left</th>
+        <th> Your ID</th>
+        <th> Your Name </th>
+        <th>From Staion Name</th>
+        <th>To Sation Name</th>
+        <th>Seat Category</th>
+        <th>Ticket Fair</th>
+        <th>PNR Number</th>
+        <th>To Sation ID</th>
+        <th>Day of Journey</th>
+        <th>Status</th>
+        <th>Train ID</th>
+        <th>Train Name</th>
     </tr>
     </thead>
     <tbody>
@@ -130,20 +124,14 @@ table.timecard tr.even {
 				<td>{{row[1]}}</td>
 				<td>{{row[2]}}</td>
 				<td>{{row[3]}}</td>
-				<td>{{row[4]}}</td>
-				<td>{{row[5]}}</td>
+                <td>{{row[4]}}</td>   
+                <td>{{row[5]}}</td>
 				<td>{{row[6]}}</td>
 				<td>{{row[7]}}</td>
 				<td>{{row[8]}}</td>
-				<td>{{row[9]}}</td>
-				<td>{{row[10]}}</td>
+                <td>{{row[9]}}</td>   
+                <td>{{row[10]}}</td>
 				<td>{{row[11]}}</td>
-				<td>{{row[12]}}</td>
-				<td>{{row[13]}}</td>
-				<td>{{row[14]}}</td>
-				<td>{{row[15]}}</td>
-				<td>{{row[16]}}</td>     
-				<td>{{row[17]}}</td>     
 				           
             </tr>
 		{% endfor %}
@@ -152,29 +140,4 @@ table.timecard tr.even {
 	
 </table>
 </div>
-<p> ------------- </p>
-<button onclick="onClick(this)" id="button1">Book A Ticket Now</button>
-	<form action = "http://localhost:5000/user_bookTicket" method="POST" id="form1">
-		
-        <fieldset>
-			<legend>Ticket Book Information</legend> 
-			Enter The Category:
-            <input type="text" name="seat_category" placeholder="like AC1/AC2/AC3/CC/EC/SL"> 
-			<br>
-			Date of Journey:
-			<input type="text" name="tarik"  value={{tarik}}> 
-			<br>
-			Enter the Train ID ypu want to travel:
-			<input type="number" name="train_id"  placeholder="like 10010 or 10165"> 
-			<br>
-			<input type="hidden" name="user_id"  value="{{user_id}}"> 
-			<br>
-            <input class="button1" value="Book Now" type="submit" /> </fieldset>
-    </form>
-</body>
-<script>
-    function onClick(x) {
-        if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
-    }
-</script>
 </html>

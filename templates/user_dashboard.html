@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	<h1> Welcome {{ name }}!</p>
-	<h1> User id: {{ user_id }}</p>
+	<h1> Your id: {{ user_id }}</p>
 <head>
     <meta charset="UTF-8">
     <title>Welcome Dear Customer</title>
     <style  type="text/css">
     body {
-	background-color: #f6f6ff;
+	background-color:palegreen;
 	font-family: Calibri, Myriad;
         }
 
@@ -92,6 +92,12 @@
         }
         #form2 {
             visibility: hidden;
+        }
+        #form3 {
+            visibility: hidden;
+        }
+        #form4 {
+            visibility: true;
 		}
     </style>
 </head>
@@ -114,7 +120,7 @@
         </tbody>
     </table>
 
-    <button onclick="onClick(this)" id="button1">Know The Schedule And Book A ticket Now</button>
+    <button onclick="onClick(this)" id="button1">Know The Scedule And Book A ticket Now</button>
     <form action = "http://localhost:5000/user_knowScedule_bookTicket" method="POST" id="form1">
         <fieldset>
             <legend>Train Schedule</legend> 
@@ -129,35 +135,37 @@
             Your User ID:
             <input type="number" name="user_id" value = {{ user_id }} > <br>
             
-            <input type="submit" value="Submit"> </fieldset>
+            <input type="submit" value="Book Now"> </fieldset>
     </form>
     <br>
-    <button onclick="onClick(this)" id="button2">Know Your Ticket </button>
-    <form action = "http://localhost:5000/" method="POST" id="form2">
+    <button onclick="onClick(this)" id="button2">Know Your Booked Ticket/s </button>
+    <form action = "http://localhost:5000/bookedTickets" method="POST" id="form2">
         <fieldset>
             <legend> e-Ticket </legend> 
-            Enter PNR number of you Ticket
-            <input type="number" name="name" > <br> First Name:
-            <br>
-            <input type="text" name="user_name" value="" > 
-            <br> user_id:
-            <br>
-            <input type="password" name="password"  >
-            <br>
-            <br>
+            Your User ID:
+            <input type="number" name="user_id" value={{user_id}} > 
             <input type="submit" value="Submit"> </fieldset>
     </form>
-    <button onclick="onClick(this)" id="button3">Sign up</button>
-    <form  action = "http://localhost:5000/welcome" method="POST" id="form3">
-        <input type="submit"  id="name" name="name" value="signup">
+    <button onclick="onClick(this)" id="button3">Cancel Your Ticket</button>
+    <form  action = "http://localhost:5000/cancelTicket1" method="POST" id="form3">
+        Enter PNR Number to cancel The Ticket:
+        <input type="number" name="pnr"  >
+        <input type="hidden" name="user_name" value={{name}}  >
+        <input type="hidden" name="user_id" value={{user_id}}  >
+        <input type="submit"  id="name" name="name" value="cancel Ticket">
 
     </form>
-    
+
+    <form  action = "http://localhost:5000/logout" method="POST" id="form4">
+        <input type="submit"  id="Logout" name="Logout" value="Logout">
+    </form>
+
 </body>
 <script>
     function onClick(x) {
         if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
-        if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";
+        if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";        
+        if (x.id === 'button3') document.getElementById("form3").style.visibility = "visible";
     }
 </script>
  

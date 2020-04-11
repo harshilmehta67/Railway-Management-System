@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<body style="background-color:powderblue;">
+<body style="background-color:chocolate">
 
-<h1>Total Ticket Details Are :</h1>
+<h1>Your Ticket Details Are :</h1>
 <h2>User ID                 :{{user_id}}</h2>
 <h2>User Name               :{{user_name}}</h2>
 <h2>Train ID                 :{{train_id}}</h2>
@@ -14,17 +14,13 @@
 <h2>Seat Category                 :{{seat_category}}</h2>
 <h2>Ticket Fair              :{{ticket_fair}}</h2>
 <h2> Status               :{{status}}</h2>
-<form action = "http://localhost:5000/user_bookTicket" method="POST" >	
+<form action = "http://localhost:5000/logout" method="POST" >	
 		<input class="button1" value="Log-out" type="submit" />
 </form>
 <br>
 <br>
 
-<form action = "http://localhost:5000/user_bookTicket" method="POST" >	
-	Enter PNR Number to cancel Ticket
-	<input type="text" name="pnr"  > 
-	<input class="button1" value="Cancel Ticket" type="submit" />
-</form>
+
 
 </body>
 </html>
