@@ -28,7 +28,7 @@
 		</style>
 <style type="text/css">
 body {
-	background-color:lightgreen;
+	background-color:rgb(238, 241, 41);
 	font-family: Calibri, Myriad;
 }
 
@@ -56,7 +56,7 @@ table.timecard caption {
 
 table.timecard thead th {
 	padding: 6px;
-	background-color: #fde9d9;
+	background-color: #f7231c;
 	font-size: large;
 }
 
@@ -72,7 +72,7 @@ table.timecard th, table.timecard td {
 	padding: 3px;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #f79646 #ccc;
+	border-color: #fdfcfb #ccc;
 }
 
 table.timecard td {
@@ -164,12 +164,16 @@ table.timecard tr.even {
 			Date of Journey:
 			<input type="text" name="tarik"  value={{tarik}}> 
 			<br>
-			Enter the Train ID ypu want to travel:
+			Enter the Train ID you want to travel:
 			<input type="number" name="train_id"  placeholder="like 10010 or 10165"> 
 			<br>
 			<input type="hidden" name="user_id"  value="{{user_id}}"> 
 			<br>
-            <input class="button1" value="Book Now" type="submit" /> </fieldset>
+			Your Balance Left:
+			<input type="number" name="balance"  value="{{balance}}"> 
+			<br>
+			 
+            <input class="button1" value="Pay From Wallet And Book Now" type="submit" /> </fieldset>
     </form>
 </body>
 <script>

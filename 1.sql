@@ -119,22 +119,22 @@ end;
 
 --about ticket for user, user with ticket is passenger so he cna know his details thorugh this
 -- keep status as confirm or reserved
-create table  passenger1 (
-  	pnr SERIAL   primary key,
+create table passenger1 (
+	pnr SERIAL primary key,
 	passenger_id int references user1(user_id),
-  	train_id int references train1(train_id),
-  	dayno int,
-  	seat_category varchar(3),
-  	status char(1)
+	train_id int references train1(train_id),
+	dayno int,
+	seat_category varchar(3),
+	status char(1),
+	price int
 )
-CREATE SEQUENCE pnr_seq start 100000000 increment 1;
+CREATE SEQUENCE pnr_seq start 100 increment 1;
 
 insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC1','C')
 insert into passenger1 values (nextval('pnr_seq'),1001,10000,1,'AC1','W')
 insert into passenger1 values (nextval('pnr_seq'),1002,10000,1,'AC1','W')
 insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC2','C')
 --generate sequence of pnr from 100.....
-CREATE SEQUENCE pnr_seq start 100000000 increment 1;
 
 ------------------------------------------------------------------------------------------------------
 --procedure for schedule: input is from station id and to station id , date
@@ -501,3 +501,40 @@ before delete on user1
 	for each row execute procedure delete_user();
 
 delete from user1 where user_id=1808
+
+-------------------------------------------------function cum trigger for showing booked tickets-------------------
+create or replace function show_tickets(u_id int) returns 
+table(
+	pnr_no int,
+	us_id int,
+	u_name varchar(20),
+	d_of_w int,
+	tr_id int,
+	tr_name varchar(20),
+	f_stat varchar(20),
+	t_stat varchar(20),
+	categ varchar(3),
+	stat char(1),
+	price int
+	) as $show_ticket$
+declare
+	flag int;
+begin
+	return query select distinct 
+	passenger1.pnr,user1.user_id,user1.name,passenger1.dayno,passenger1.train_id,
+	train1.train_name,aa.station_name,bb.station_name,passenger1.seat_category,
+	passenger1.status,passenger1.price
+	from station1 bb inner join
+	station1 aa inner join
+	train1 inner join 
+	passenger1 inner join user1 
+	on passenger1.passenger_id=user1.user_id
+	on train1.train_id=passenger1.train_id 
+	on aa.station_id = train1.starting_station_id
+	on bb.station_id = train1.ending_station_id
+	where u_id=user_id and u_id=passenger_id;
+end;
+$show_ticket$
+language plpgsql
+
+select show_tickets(1002)

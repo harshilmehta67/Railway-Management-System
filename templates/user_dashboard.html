@@ -7,7 +7,7 @@
     <title>Welcome Dear Customer</title>
     <style  type="text/css">
     body {
-	background-color:palegreen;
+	background-color:rgb(152, 251, 229);
 	font-family: Calibri, Myriad;
         }
 
@@ -21,13 +21,13 @@
             margin: auto;
             width: 600px;
             border-collapse: collapse;
-            border: 1px solid #fff; /*for older IE*/
+            border: 1px solid rgb(14, 13, 13); /*for older IE*/
             border-style: hidden;
         }
 
         table.timecard caption {
-            background-color: #f79646;
-            color: #fff;
+            background-color: #0e0d0d;
+            color: rgb(15, 15, 15);
             font-size: x-large;
             font-weight: bold;
             letter-spacing: .3em;
@@ -35,7 +35,7 @@
 
         table.timecard thead th {
             padding: 8px;
-            background-color: #fde9d9;
+            background-color: #ee471d;
             font-size: large;
         }
 
@@ -51,7 +51,7 @@
             padding: 3px;
             border-width: 1px;
             border-style: solid;
-            border-color: #f79646 #ccc;
+            border-color: #f30c0c rgb(248, 10, 10);
         }
 
         table.timecard td {
@@ -71,7 +71,7 @@
         }
 
         table.timecard tr.even {
-            background-color: #fde9d9;
+            background-color: hsl(71, 90%, 53%);
         }
         button {
             border: 2px solid yellow;
@@ -98,6 +98,9 @@
         }
         #form4 {
             visibility: true;
+		}
+        #form5 {
+            visibility: hidden;
 		}
     </style>
 </head>
@@ -156,6 +159,19 @@
 
     </form>
 
+    <button onclick="onClick(this)" id="button5">Add Money To Your Balance</button>
+    <form action = "http://localhost:5000/addmoney" method="POST" id="form5">
+        <fieldset>
+            <legend>Add Money</legend> 
+            Amout to be Added
+            <input type="number" name="balance" > 
+            <input type="hidden" name="user_id" value = {{ user_id }} > <br>
+            
+            <input type="submit" value="Add Now">
+            <input type="hidden" name="user_name" value = {{ name }} > <br>
+            
+        </fieldset>
+    </form>
     <form  action = "http://localhost:5000/logout" method="POST" id="form4">
         <input type="submit"  id="Logout" name="Logout" value="Logout">
     </form>
@@ -166,6 +182,8 @@
         if (x.id === 'button1') document.getElementById("form1").style.visibility = "visible";
         if (x.id === 'button2') document.getElementById("form2").style.visibility = "visible";        
         if (x.id === 'button3') document.getElementById("form3").style.visibility = "visible";
+        if (x.id === 'button4') document.getElementById("form4").style.visibility = "visible";
+        if (x.id === 'button5') document.getElementById("form5").style.visibility = "visible";
     }
 </script>
  

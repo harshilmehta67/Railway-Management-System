@@ -95,8 +95,12 @@ def user_knowSchedule_bookTicket():
       user_id = data["user_id"]
       cursor.execute(query,(sp,ep,tarik))
       result = cursor.fetchall()
-      
-      return render_template('user_knowScheduleAndBookTicket.html', value = result, user_name = user_name, user_id = user_id, tarik = tarik)
+      query = "select balance from user1 where user_id=%s"
+      cursor.execute(query,(user_id,))
+      balance = cursor.fetchone()
+      balance = int(balance[0])
+
+      return render_template('user_knowScheduleAndBookTicket.html', value = result, user_name = user_name, user_id = user_id, tarik = tarik, balance=balance)
 
 @app.route('/user_bookTicket',methods=['POST','GET'])
 def user_bookTicket():
@@ -140,15 +144,31 @@ def user_bookTicket():
       cursor.execute(query,(train_id,divas,seat_category))
       ticket_fair = cursor.fetchone()
       ticket_fair = int(ticket_fair[0])
+      query = "select balance from user1 where user_id=%s"
+      cursor.execute(query,(user_id,))
+      balance = cursor.fetchone()
+      balance = int(balance[0])
       if ticket_fair > 100000 :
-         query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'C')"
-         cursor.execute(query,(user_id,train_id,divas,seat_category,))
-         connection.commit()
-         ticket_fair = ticket_fair - 100000
+         if ticket_fair - 100000 > balance:
+            return render_template('welcome.html')
+         else:
+            query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'C')"
+            cursor.execute(query,(user_id,train_id,divas,seat_category,))
+            connection.commit()
+            ticket_fair = ticket_fair - 100000
+            query = "update user1 set balance = balance - %s where user_id = %s"
+            cursor.execute(query,(ticket_fair,user_id,))
+            connection.commit()
       else:
-         query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'W')"
-         cursor.execute(query,(user_id,train_id,divas,seat_category,))
-         connection.commit()
+         if ticket_fair > balance:
+            return render_template('welcome.html')
+         else:
+            query = "update user1 set balance = balance - %s where user_id = %s"
+            cursor.execute(query,(ticket_fair,user_id,))
+            connection.commit()
+            query = "insert into passenger1 values(nextval('pnr_seq'),%s,%s,%s,%s,'W')"
+            cursor.execute(query,(user_id,train_id,divas,seat_category,))
+            connection.commit()
 
 
       query = "select pnr from passenger1 where passenger_id = %s"
@@ -174,6 +194,19 @@ def user_bookTicket():
 
       return render_template('user_eTicket.html',user_name = user_name, user_id = user_id, from_station_name = from_station_name, to_station_name = to_station_name, seat_category = seat_category, ticket_fair = ticket_fair, passenger_pnrno=passenger_pnrno, doj= tarik, status=status,train_id= train_id, train_name=train_name)
       
+@app.route('/addmoney', methods=['POST','GET'])
+def addmoney():
+   if request.method == 'POST':
+      data = request.form
+      user_id = data["user_id"]
+      balance = data["balance"]
+      query = "update user1 set balance = balance + %s where user_id = %s"
+      cursor.execute(query,(balance,user_id,))
+      connection.commit()
+      user_name= data["user_name"]
+      cursor.execute("select * from station1 order by station_name")
+      result = cursor.fetchall()
+      return render_template('user_dashboard.html',name = user_name, user_id = user_id, value = result)
 
 @app.route('/admin_amend_data', methods=['POST','GET'])
 def admin_amend_data():
