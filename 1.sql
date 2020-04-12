@@ -208,7 +208,7 @@ select check_user_id(1000);
 
 
 
------------------function for book seat ------------------------------------------------------------------
+-----------------------------------function for book seat ------------------------------------------------------------------
 select book_seat(10000,1,'AC1')
 
 create or replace function book_seat(t_id int, days int, categ varchar)
@@ -247,7 +247,7 @@ begin
 		else
 			update seat_class2 set ac3_booked_seats=ac3_booked_seats+1
 			where(train_id = t_id and working_day=days);
-			return ac3_price+1000000 from seat_class2 where(train_id = t_id and working_day=days);
+			return ac3_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	elsif(categ='CC')then
 		select cc_total_seats,cc_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
@@ -260,7 +260,7 @@ begin
 			return cc_price+100000 from seat_class2 where(train_id = t_id and working_day=days);
 		end if;
 	elsif(categ='EC')then
-		select ec_total_seats,ec1_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
+		select ec_total_seats,ec_booked_seats into che,baki_che from seat_class2 where(train_id = t_id and working_day=days);
 		if(che=baki_che)then
 			raise notice'No seats left';
 			return ec_price from seat_class2 where(train_id = t_id and working_day=days) ;
