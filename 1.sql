@@ -130,12 +130,19 @@ create table passenger1 (
 )
 CREATE SEQUENCE pnr_seq start 100 increment 1;
 
-insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC1','C')
-insert into passenger1 values (nextval('pnr_seq'),1001,10000,1,'AC1','W')
-insert into passenger1 values (nextval('pnr_seq'),1002,10000,1,'AC1','W')
-insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'AC2','C')
 --generate sequence of pnr from 100.....
 
+
+create table deleted_tickes(
+	pnr int,
+	passenger_id int,
+	passenger_name varchar(20),
+	train_id int,
+	dayno int,
+	seat_category varchar(3),
+	status char(1),
+	time_ timestamp
+)
 ------------------------------------------------------------------------------------------------------
 --procedure for schedule: input is from station id and to station id , date
 --output is table
@@ -287,7 +294,7 @@ end;
 $book_seat$
 language plpgsql
 
-------total revenue generated for a particular train on a day--------------------------------------
+-----------------------total revenue generated for a particular train on a day--------------------------------------
 create or replace function revenue(t_id int, dofweek int) returns int
 as $revenue$
 begin
@@ -538,3 +545,23 @@ $show_ticket$
 language plpgsql
 
 select show_tickets(1002)
+
+
+----------------------------------------record for showing list of deleted tickets--------------------------------
+create or replace function del_tic_records() returns trigger as
+$del_tic_records$
+declare
+	fname varchar(20);
+begin
+	select name into fname from user1 where user_id=old.passenger_id;
+	insert into deleted_tickes values(old.pnr, old.passenger_id,fname,old.train_id,old.dayno,
+									 old.seat_category,old.status,localtimestamp);
+	return old;
+end;
+$del_tic_records$
+language plpgsql;
+
+create trigger delete_t before delete on passenger1
+for each row execute procedure del_tic_records();
+
+select * from deleted_tickes

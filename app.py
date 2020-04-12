@@ -301,7 +301,7 @@ def bookedTickets():
     if request.method == 'POST':
         data = request.form
         user_id = data["user_id"]
-        query = "select * from bookedTickets(%s)"
+        query = "select * from show_tickets(%s)"
         cursor.execute(query,(user_id,))
         result = cursor.fetchall()
         return render_template('bookedTickets.html',value = result)

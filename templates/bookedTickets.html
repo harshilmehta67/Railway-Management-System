@@ -103,18 +103,18 @@ table.timecard tr.even {
 <table class="timecard" align="right">
     <thead>
     <tr>
+		<th> PNR Number</th>
         <th> Your ID</th>
-        <th> Your Name </th>
-        <th>From Staion Name</th>
+		<th> Your Name </th>
+        <th>Day of Journey</th>
+		<th>Train ID</th>
+        <th>Train Name</th>
+		<th>From Staion Name</th>
         <th>To Sation Name</th>
         <th>Seat Category</th>
-        <th>Ticket Fair</th>
-        <th>PNR Number</th>
-        <th>To Sation ID</th>
-        <th>Day of Journey</th>
-        <th>Status</th>
-        <th>Train ID</th>
-        <th>Train Name</th>
+		<th>Status</th>
+		<th>Ticket Fair</th>
+		
     </tr>
     </thead>
     <tbody>
@@ -131,8 +131,7 @@ table.timecard tr.even {
 				<td>{{row[8]}}</td>
                 <td>{{row[9]}}</td>   
                 <td>{{row[10]}}</td>
-				<td>{{row[11]}}</td>
-				           
+				
             </tr>
 		{% endfor %}
 		<br> <br>
