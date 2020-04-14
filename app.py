@@ -65,6 +65,9 @@ def signup():
          if ( dummy[0] == 0) :
            cursor.execute("insert into user1 values(%s,%s,%s,%s,%s,%s)", (user_id, emailid,user_name,gender,dob,mobile_no,))
            connection.commit()
+           query = "update user1 set balance = 0 where user_id = %s"
+           cursor.execute(query,(user_id,))
+           connection.commit()
            if dummy[0] == 0 :
                cursor.execute("select * from station1 order by station_name")
                result = cursor.fetchall()
@@ -99,7 +102,7 @@ def user_knowSchedule_bookTicket():
       cursor.execute(query,(user_id,))
       balance = cursor.fetchone()
       balance = int(balance[0])
-
+      print(balance)
       return render_template('user_knowScheduleAndBookTicket.html', value = result, user_name = user_name, user_id = user_id, tarik = tarik, balance=balance)
 
 @app.route('/user_bookTicket',methods=['POST','GET'])
@@ -387,6 +390,7 @@ def trainBetweenTwoStations():
       query = "select * from train_btwn(%s,%s)"
       cursor.execute(query,(f_station,t_station))
       result = cursor.fetchall()
+      print(result)
       return render_template('trainBetweenTwoStation.html', value = result)
 
 @app.route('/trainBetweenTwoDates', methods = ['POST','GET'])
@@ -413,31 +417,31 @@ def revenue():
          if keys == 'mon':
             cursor.execute(query,(train_id,1))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'tue':
             cursor.execute(query,(train_id,2))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'wed':
             cursor.execute(query,(train_id,3))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'thu':
             cursor.execute(query,(train_id,4))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'fri':
             cursor.execute(query,(train_id,5))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'sat':
             cursor.execute(query,(train_id,6))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
          if keys == 'sun':
             cursor.execute(query,(train_id,7))
             result = cursor.fetchone()
-            total_revenue = total_revenue + result[0]
+            total_revenue = total_revenue + int(result[0])
       query = "select train_name from train1 where train_id = %s"
       cursor.execute(query,(train_id,))
       train_name = cursor.fetchone()[0]
@@ -469,6 +473,7 @@ def knowDeletedTickets():
          
       cursor.execute(query,(train_id,))
       result = cursor.fetchall()
+      print(result)
       return render_template('deletedTickets.html', value = result)
             
 

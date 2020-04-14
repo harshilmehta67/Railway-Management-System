@@ -23,6 +23,8 @@ insert into train1 values(10003, 'mumtodelhi'  ,   104,   105,  10.00,  22.00, '
 insert into train1 values(10004, 'mumtosrt'    ,   104,   103,  15.30,  10.00, 'N', 'N' ,'Y', 'N', 'N', 'Y', 'Y');
 insert into train1 values(10005, 'delhitorjk'  ,   105,   100,  9.30,   23.00, 'Y', 'Y' ,'N', 'N', 'N', 'Y', 'N');
 insert into train1 values(10006,  'ontime'     ,   104,   101,  13.30,  05.45, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
+insert into train1 values(100014, 'Umumba'     ,   104,   105,  13.30,  15.45, 'Y', 'Y', 'Y', 'Y', 'N', 'Y', 'Y');
+insert into train1 values(100024, 'DareDevils' ,   104,   105,  02.30,  10.40, 'Y', 'Y', 'Y', 'Y', 'N', 'Y', 'Y');
 end
 
 
@@ -104,6 +106,7 @@ create table user1(
     gender char(1),
     dob date,
     mobile_no int,   
+	balance int
 )
 --user id is 4 digit password for user1
 --user id 1000 name ramesh
@@ -129,7 +132,7 @@ create table passenger1 (
 	price int
 )
 CREATE SEQUENCE pnr_seq start 100 increment 1;
-
+insert into (nextval('pnr_seq'),1808,10000,1,'AC1','C',300)
 --generate sequence of pnr from 100.....
 
 
@@ -191,6 +194,8 @@ begin
 		  and seat_class2.working_day=dayno);
 end;
 $dis_train2$ language plpgsql;
+
+--How to call?
 select dis_train2(100,101,'20-04-2020')
 
 
@@ -216,6 +221,7 @@ select check_user_id(1000);
 
 
 -----------------------------------function for book seat ------------------------------------------------------------------
+--function for booking a seat
 select book_seat(10000,1,'AC1')
 
 create or replace function book_seat(t_id int, days int, categ varchar)
