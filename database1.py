@@ -7,13 +7,13 @@ try:
                                   port = "5432",
                                   database = "postgres")
     cursor = connection.cursor()
-    query1 = "insert into passenger1 values (nextval('pnr_seq'),1000,10000,1,'CC','C')"
     
     #query = "select cancel_ticket(%s)"
     #pnr_no = 105
     #cursor.execute(query,(pnr_no,))
     #connection.commit()
-    cursor.execute("select * from passenger1")
+    train_id = 10000
+    cursor.execute("select * from deleted_tickes where train_id = %s and dayno = 1",(train_id,))
     result = cursor.fetchall()
 
     print(result)

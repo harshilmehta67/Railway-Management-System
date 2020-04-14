@@ -445,6 +445,32 @@ def revenue():
       print(train_name)
       return render_template('revenue.html', train_id = train_id, train_name = train_name,rev = total_revenue)
 
+@app.route('/knowDeletedTickets',methods=['POST','GET'])
+def knowDeletedTickets():
+   if request.method == 'POST':
+      data = request.form
+      print(data)
+      train_id = data["train_id"]
+      for keys in data.keys():
+         if keys == 'mon':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 1"
+         if keys == 'tue':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 2"
+         if keys == 'wed':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 3"
+         if keys == 'thu':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 4"
+         if keys == 'fri':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 5"
+         if keys == 'sat':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 6"
+         if keys == 'sun':
+            query = "select * from deleted_tickes where train_id = %s and dayno = 7"
+         
+      cursor.execute(query,(train_id,))
+      result = cursor.fetchall()
+      return render_template('deletedTickets.html', value = result)
+            
 
 @app.route('/<name> <user_id>')
 def login_success(name,user_id):
