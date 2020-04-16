@@ -111,12 +111,6 @@ create table user1(
 --user id is 4 digit password for user1
 --user id 1000 name ramesh
 --6 digit mobile no
-begin
-insert into user1 values(1000,'ram@gmail.com','ram','M','01-01-2000',982370)
-insert into user1 values(1001,'shyam@gmail.com','shyam','M','05-05-1987',123456)
-insert into user1 values(1002,'rahim@gmail.com','rahim','M','6-12-2001',235415)
-insert into user1 values(1003,'preeti@gmail.com','preeti','M','02-02-2002',432312)
-end;
 
 
 
@@ -571,3 +565,68 @@ create trigger delete_t before delete on passenger1
 for each row execute procedure del_tic_records();
 
 select * from deleted_tickes
+
+--------------------------------------------Reservation Chart Function--------------------------------------
+create or replace function all_pass_of_train(t_id int, days int)
+returns table(
+	pass_id int,
+	pass_name varchar(20),
+	categ varchar(3)
+)
+as $all_pass_of_trian$
+begin
+	return query select
+	passenger1.passenger_id,user1.name,passenger1.seat_category
+	from passenger1 inner join user1 on passenger1.passenger_id = user1.user_id
+	where passenger1.train_id = t_id and passenger1.dayno=days
+	order by passenger1.seat_category;
+end;
+$all_pass_of_trian$
+language plpgsql
+select * from all_pass_of_train(10001,2)
+
+----------------------------function of three station facility----------------------------------------
+create or replace function timechange(t_1 float)
+returns float
+as $timechange$
+declare
+che numeric(4,2);
+begin 
+	che=t_1-trunc(t_1);
+	return trunc(che/0.6)  + trunc(t_1) + MOD(che,0.6);
+end;
+$timechange$
+language plpgsql
+
+insert into train1 values(10007,'Check1',101,102,10.5,1.2,'Y','N','Y','N','Y','N','Y');
+insert into train1 values(10008,'Check2',101,102,12.2,1.4,'Y','N','Y','N','Y','N','Y');
+insert into seat_class2 values(10007,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+insert into seat_class2 values(10008,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+
+create or replace function dis_two_train(st1_id int,st2_id int,st3_id int,dayno int)
+returns table(
+	tra1_id int,
+	tra1_name varchar(20),
+	tra1_sta float,
+	tra1_stop float,
+	tra2_id int,
+	tra2_name varchar(20),
+	tra2_sta float,
+	tra2_stop float
+)
+as $dis_two_train$
+begin
+	return query select aa.train_id, aa.train_name, aa.starting_time,
+	timechange(aa.starting_time + aa.journey_time),
+	bb.train_id, bb.train_name, bb.starting_time,
+	timechange(bb.starting_time + bb.journey_time)
+	from seat_class2 inner join
+	train1 aa inner join train1 bb
+	on aa.mon = bb.mon
+	on seat_class2.train_id = aa.train_id
+	where aa.mon='Y' and bb.mon='Y' and seat_class2.working_day=dayno and 
+	bb.starting_time >= timechange(aa.starting_time+aa.journey_time);
+end;
+$dis_two_train$
+language plpgsql
+select dis_two_train(101,102,103,1)
